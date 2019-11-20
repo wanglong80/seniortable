@@ -634,6 +634,23 @@ function sheetInitEvents() {
     this.focusing = overlayerEl.contains(evt.target);
   });
 
+  bind(window, 'paste', (e) => {
+    console.log(e.clipboardData.getData('text/plain'));
+
+    const text = e.clipboardData.getData('text/plain');
+    // 得到粘贴板内容的数组
+    const textArray = text.split('\n');
+    if (textArray.length > 0) {
+      // 从excel 复制的数据最后一行会有空的回车符，这里要手动的去掉
+      if (textArray[textArray.length - 1].length === 0) {
+        textArray.splice(textArray.length - 1, 1);
+      }
+      for (let i = 0; i < textArray.length; i++) {
+        console.log(`项：${textArray[i]}`);
+      }
+    }
+  });
+
   // for selector
   bind(window, 'keydown', (evt) => {
     if (!this.focusing) return;
@@ -675,8 +692,8 @@ function sheetInitEvents() {
           break;
         case 86:
           // ctrl + v
-          paste.call(this, what);
-          evt.preventDefault();
+          // paste.call(this, what);
+          // evt.preventDefault();
           break;
         case 37:
           // ctrl + left
