@@ -843,6 +843,7 @@ export default class DataProxy {
     }
   }
 
+  // 纵向滚动处理函数
   scrolly(y, cb) {
     const { scroll, freeze, rows } = this;
     const [fri] = freeze;
@@ -853,7 +854,7 @@ export default class DataProxy {
     if (y > 0) y1 += height;
     // console.log('ri:', ri, ' ,y:', y1);
     if (scroll.y !== y1) {
-      scroll.ri = y > 0 ? ri : 0;
+      scroll.ri = y > 0 ? ri : 0; // 移动行
       scroll.y = y1;
       cb();
     }

@@ -30,6 +30,10 @@ class Spreadsheet {
     return this.data.getData();
   }
 
+  getCell(ri, ci) {
+    return this.data.getCell(ri, ci);
+  }
+
   validate() {
     const { validations } = this.data;
     return validations.errors.size <= 0;

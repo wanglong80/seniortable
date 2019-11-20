@@ -131,6 +131,7 @@ function overlayerMousemove(evt) {
   }
 }
 
+// 触控板&滚轮事件
 function overlayerMousescroll(evt) {
   const { verticalScrollbar, horizontalScrollbar, data } = this;
   const { top } = verticalScrollbar.scroll();
@@ -141,31 +142,28 @@ function overlayerMousescroll(evt) {
 
   // deltaY for vertical delta
   let { deltaY } = evt;
-  // console.log('deltaX', deltaX, 'evt.detail', evt.detail);
+  const { deltaX } = evt;
+
   if (evt.detail) deltaY = evt.detail * 40;
-  if (deltaY > 0) {
+  if (deltaY > 5) {
     // up
     const ri = data.scroll.ri + 1;
     if (ri < rows.len) {
       verticalScrollbar.move({ top: top + rows.getHeight(ri) - 1 });
     }
-  } else {
+  } else if (deltaY < -5) {
     // down
     const ri = data.scroll.ri - 1;
     if (ri >= 0) {
       verticalScrollbar.move({ top: ri === 0 ? 0 : top - rows.getHeight(ri) });
     }
-  }
-
-  // deltaX for Mac horizontal scroll
-  const { deltaX } = evt;
-  if (deltaX > 0) {
+  } else if (deltaX > 5) {
     // left
     const ci = data.scroll.ci + 1;
     if (ci < cols.len) {
       horizontalScrollbar.move({ left: left + cols.getWidth(ci) - 1 });
     }
-  } else {
+  } else if (deltaX < -5) {
     // right
     const ci = data.scroll.ci - 1;
     if (ci >= 0) {
@@ -260,6 +258,7 @@ function cut() {
 }
 
 function paste(what) {
+  console.log(this);
   const { data } = this;
   if (data.paste(what, msg => xtoast('Tip', msg))) {
     sheetReset.call(this);
@@ -361,6 +360,7 @@ function editorSet() {
   clearClipboard.call(this);
 }
 
+// 纵向滚动事件
 function verticalScrollbarMove(distance) {
   const { data, table, selector } = this;
   data.scrolly(distance, () => {
@@ -370,6 +370,7 @@ function verticalScrollbarMove(distance) {
   });
 }
 
+// 横向滚动事件
 function horizontalScrollbarMove(distance) {
   const { data, table, selector } = this;
   data.scrollx(distance, () => {
@@ -424,62 +425,62 @@ function insertDeleteRowColumn(type) {
   } else if (type === 'delete-cell-text') {
     data.deleteCell('text');
   } else if (type === 'cell-printable') {
-    const range = this.selector.range
+    const { range } = this.selector;
     this.data.changeData(() => {
-      range.each((i,j) => {
+      range.each((i, j) => {
         const row = this.data.rows.get(i);
-        if(row !== null){
-          const cell = this.data.rows.getCell(i,j)
-          console.log("CELL",cell)
-          if(cell !== null){
-            cell['printable']=true;
+        if (row !== null) {
+          const cell = this.data.rows.getCell(i, j);
+          console.log('CELL', cell);
+          if (cell !== null) {
+            cell.printable = true;
           }
         }
-      })
-    })
+      });
+    });
   } else if (type === 'cell-non-printable') {
-    const range = this.selector.range
+    const { range } = this.selector;
     this.data.changeData(() => {
-      range.each((i,j) => {
+      range.each((i, j) => {
         const row = this.data.rows.get(i);
-        if(row !== null){
-          const cell = this.data.rows.getCell(i,j)
-          console.log("CELL",cell)
-          if(cell !== null){
-            cell['printable']=false;
+        if (row !== null) {
+          const cell = this.data.rows.getCell(i, j);
+          console.log('CELL', cell);
+          if (cell !== null) {
+            cell.printable = false;
           }
           // cell.css('background-color','black')
         }
-      })
-    })
+      });
+    });
   } else if (type === 'cell-editable') {
-    const range = this.selector.range
+    const { range } = this.selector;
     this.data.changeData(() => {
-      range.each((i,j) => {
+      range.each((i, j) => {
         const row = this.data.rows.get(i);
-        if(row !== null){
-          const cell = this.data.rows.getCell(i,j)
-          console.log("CELL",cell)
-          if(cell !== null){
-            cell['editable']=true;
+        if (row !== null) {
+          const cell = this.data.rows.getCell(i, j);
+          console.log('CELL', cell);
+          if (cell !== null) {
+            cell.editable = true;
           }
         }
-      })
-    })
+      });
+    });
   } else if (type === 'cell-non-editable') {
-    const range = this.selector.range
+    const { range } = this.selector;
     this.data.changeData(() => {
-      range.each((i,j) => {
+      range.each((i, j) => {
         const row = this.data.rows.get(i);
-        if(row !== null){
-          const cell = this.data.rows.getCell(i,j)
-          console.log("CELL",cell)
-          if(cell !== null){
-            cell['editable']=false;
+        if (row !== null) {
+          const cell = this.data.rows.getCell(i, j);
+          console.log('CELL', cell);
+          if (cell !== null) {
+            cell.editable = false;
           }
         }
-      })
-    })
+      });
+    });
   }
   clearClipboard.call(this);
   sheetReset.call(this);
@@ -794,7 +795,7 @@ export default class Sheet {
     // resizer
     this.rowResizer = new Resizer(false, data.rows.height);
     this.colResizer = new Resizer(true, data.cols.minWidth);
-    // scrollbar
+    // 实例化滚动条
     this.verticalScrollbar = new Scrollbar(true);
     this.horizontalScrollbar = new Scrollbar(false);
     // editor

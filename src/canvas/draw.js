@@ -7,15 +7,19 @@ function thinLineWidth() {
   return dpr() - 0.5;
 }
 
+// 正常像素单位
 function npx(px) {
   return parseInt(px * dpr(), 10);
 }
 
+// 细的像素单位（一般用来画细线）
 function npxLine(px) {
   const n = npx(px);
   return n > 0 ? n - 0.5 : 0.5;
 }
 
+// 单元格线框盒子类
+// 建议类名改为：BorderBox
 class DrawBox {
   constructor(x, y, w, h, padding = 0) {
     this.x = x;
@@ -192,7 +196,9 @@ class Draw {
     return this;
   }
 
+  // 向单元格填充文本
   fillText(text, x, y) {
+    // console.log(`填充文本：${text} X:${x}Y:${y}`);
     this.ctx.fillText(text, npx(x), npx(y));
     return this;
   }
@@ -276,7 +282,9 @@ class Draw {
     return this;
   }
 
-  border(style, color) {
+  // 设置线的粗细、样式、颜色
+  // 建议函数名改为 setLineStyle
+  setLineStyle(style, color) {
     const { ctx } = this;
     ctx.lineWidth = thinLineWidth;
     ctx.strokeStyle = color;
@@ -295,6 +303,9 @@ class Draw {
     return this;
   }
 
+  // 画直线
+  // 参数为 [[x0,y0], [x1,y1], [x2,y2], ...]
+  // 从 [x0,y0] 出发 分别向 [x1,y1] [x2,y2]... 画直线
   line(...xys) {
     const { ctx } = this;
     if (xys.length > 1) {
@@ -309,30 +320,32 @@ class Draw {
     return this;
   }
 
-  strokeBorders(box) {
+  // 绘出单元格线框样式
+  // 参数
+  strokeBorders(borderBox) {
     const { ctx } = this;
     ctx.save();
     ctx.beginPath();
     // border
     const {
       borderTop, borderRight, borderBottom, borderLeft,
-    } = box;
+    } = borderBox;
     if (borderTop) {
-      this.border(...borderTop);
+      this.setLineStyle(...borderTop);
       // console.log('box.topxys:', box.topxys());
-      this.line(...box.topxys());
+      this.line(...borderBox.topxys());
     }
     if (borderRight) {
-      this.border(...borderRight);
-      this.line(...box.rightxys());
+      this.setLineStyle(...borderRight);
+      this.line(...borderBox.rightxys());
     }
     if (borderBottom) {
-      this.border(...borderBottom);
-      this.line(...box.bottomxys());
+      this.setLineStyle(...borderBottom);
+      this.line(...borderBox.bottomxys());
     }
     if (borderLeft) {
-      this.border(...borderLeft);
-      this.line(...box.leftxys());
+      this.setLineStyle(...borderLeft);
+      this.line(...borderBox.leftxys());
     }
     ctx.restore();
   }
@@ -384,7 +397,7 @@ class Draw {
     ctx.fill();
     ctx.restore();
   }
-  
+
   rect(box, dtextcb) {
     const { ctx } = this;
     const {
