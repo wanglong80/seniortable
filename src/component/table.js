@@ -3,35 +3,24 @@ import { getFontSizePxByPt } from '../core/font';
 import _cell from '../core/cell';
 import { formulam } from '../core/formula';
 import { formatm } from '../core/format';
-
+import BorderBox from '../core/border_box';
 import {
-  Draw, DrawBox, thinLineWidth, npx,
-} from '../canvas/draw';
+  Draw, thinLineWidth, npx, npxLine,
+} from '../core/draw';
+
+/**
+ * 整个表格的主要类
+ * 这个类承担着组装大部分核心类（特别是draw类），用来绘制表格，完成基本的底层应用封装
+ */
 // gobal var
 const cellPaddingWidth = 5;
-const tableFixedHeaderCleanStyle = { fillStyle: '#f4f5f8' };
-const tableGridStyle = {
-  fillStyle: '#fff',
-  lineWidth: thinLineWidth,
-  strokeStyle: '#e6e6e6',
-};
-function tableFixedHeaderStyle() {
-  return {
-    textAlign: 'center',
-    textBaseline: 'middle',
-    font: `500 ${npx(12)}px Source Sans Pro`,
-    fillStyle: '#585757',
-    lineWidth: thinLineWidth(),
-    strokeStyle: '#e6e6e6',
-  };
-}
 
-function getDrawBox(rindex, cindex) {
+function getBorderBox(rindex, cindex) {
   const { data } = this;
   const {
     left, top, width, height,
   } = data.cellRect(rindex, cindex);
-  return new DrawBox(left, top, width, height, cellPaddingWidth);
+  return new BorderBox(left, top, width, height, cellPaddingWidth);
 }
 /*
 function renderCellBorders(bboxes, translateFunc) {
@@ -68,7 +57,7 @@ function renderCell(rindex, cindex) {
 
   const style = data.getCellStyleOrDefault(nrindex, cindex);
   // console.log('style:', style);
-  const dbox = getDrawBox.call(this, rindex, cindex);
+  const dbox = getBorderBox.call(this, rindex, cindex);
   dbox.bgcolor = style.bgcolor;
   if (style.border !== undefined) {
     dbox.setBorders(style.border);
@@ -113,7 +102,7 @@ function renderAutofilter(viewRange) {
     const afRange = autoFilter.hrange();
     if (viewRange.intersects(afRange)) {
       afRange.each((ri, ci) => {
-        const dbox = getDrawBox.call(this, ri, ci);
+        const dbox = getBorderBox.call(this, ri, ci);
         draw.dropdown(dbox);
       });
     }
@@ -169,14 +158,15 @@ function renderContent(viewRange, fw, fh, tx, ty) {
   draw.restore();
 }
 
+// 绘制表头单元格选中时的样式
 function renderSelectedHeaderCell(x, y, w, h) {
   const { draw } = this;
   draw.save();
-  draw.attr({ fillStyle: 'rgba(75, 137, 255, 0.08)' })
-    .fillRect(x, y, w, h);
+  draw.attr({ fillStyle: 'rgb(233, 233, 233)' }).fillRect(x, y, w, h);
   draw.restore();
 }
 
+// 绘制固定行列头（文本、样式）
 // viewRange
 // type: all | left | top
 // w: the fixed width of header
@@ -191,8 +181,7 @@ function renderFixedHeaders(type, viewRange, w, h, tx, ty) {
   const ntx = tx + w;
 
   draw.save();
-  // draw rect background
-  draw.attr(tableFixedHeaderCleanStyle);
+  draw.attr({ fillStyle: '#f7f7f7' }); // 行列头背景色
   if (type === 'all' || type === 'left') draw.fillRect(0, nty, w, sumHeight);
   if (type === 'all' || type === 'top') draw.fillRect(ntx, 0, sumWidth, h);
 
@@ -202,30 +191,44 @@ function renderFixedHeaders(type, viewRange, w, h, tx, ty) {
   // console.log(data.selectIndexes);
   // draw text
   // text font, align...
-  draw.attr(tableFixedHeaderStyle());
-  // y-header-text
+  draw.attr({
+    textAlign: 'center',
+    textBaseline: 'middle',
+    font: `500 ${npx(12)}px Source Sans Pro`,
+    fillStyle: '#666666', // 行列头的文本颜色
+    lineWidth: thinLineWidth,
+    strokeStyle: '#ccc', // 行列头边线颜色
+  });
+
+  // 绘制列头文本
   if (type === 'all' || type === 'left') {
     data.rowEach(viewRange.sri, viewRange.eri, (i, y1, rowHeight) => {
       const y = nty + y1;
       const ii = i;
-      draw.line([0, y], [w, y]);
+
       if (sri <= ii && ii < eri + 1) {
         renderSelectedHeaderCell.call(this, 0, y, w, rowHeight);
       }
+
+      draw.line([0, y], [w, y]);
       draw.fillText(ii + 1, w / 2, y + (rowHeight / 2));
     });
     draw.line([0, sumHeight + nty], [w, sumHeight + nty]);
     draw.line([w, nty], [w, sumHeight + nty]);
   }
-  // x-header-text
+
+  // 绘制行头文本
   if (type === 'all' || type === 'top') {
     data.colEach(viewRange.sci, viewRange.eci, (i, x1, colWidth) => {
       const x = ntx + x1;
       const ii = i;
-      draw.line([x, 0], [x, h]);
+
+      // 单元格选中绘制要放在前面，这样层级才能在线条的下面
       if (sci <= ii && ii < eci + 1) {
         renderSelectedHeaderCell.call(this, x, 0, colWidth, h);
       }
+
+      draw.line([x, 0], [x, h]);
       draw.fillText(stringAt(ii), x + (colWidth / 2), h / 2);
     });
     draw.line([sumWidth + ntx, 0], [sumWidth + ntx, h]);
@@ -234,15 +237,16 @@ function renderFixedHeaders(type, viewRange, w, h, tx, ty) {
   draw.restore();
 }
 
+// 绘制固定左上角单元格样式
 function renderFixedLeftTopCell(fw, fh) {
   const { draw } = this;
   draw.save();
-  // left-top-cell
-  draw.attr({ fillStyle: '#f4f5f8' })
-    .fillRect(0, 0, fw, fh);
+  draw.attr({ fillStyle: '#f7f7f7' });
+  draw.fillRect(0, 0, fw, fh);
   draw.restore();
 }
 
+// 绘制单元格
 function renderContentGrid({
   sri, sci, eri, eci, w, h,
 }, fw, fh, tx, ty) {
@@ -250,7 +254,11 @@ function renderContentGrid({
   const { settings } = data;
 
   draw.save();
-  draw.attr(tableGridStyle)
+  draw.attr({
+    fillStyle: '#fff',
+    lineWidth: thinLineWidth,
+    strokeStyle: '#ccc', // 单元格边线颜色
+  })
     .translate(fw + tx, fh + ty);
   // const sumWidth = cols.sumWidth(sci, eci + 1);
   // const sumHeight = rows.sumHeight(sri, eri + 1);
@@ -315,8 +323,9 @@ class Table {
     // 1
     renderContentGrid.call(this, viewRange, fw, fh, tx, ty);
     renderContent.call(this, viewRange, fw, fh, -x, -y);
-    renderFixedHeaders.call(this, 'all', viewRange, fw, fh, tx, ty);
     renderFixedLeftTopCell.call(this, fw, fh);
+    renderFixedHeaders.call(this, 'all', viewRange, fw, fh, tx, ty);
+
     const [fri, fci] = data.freeze;
     if (fri > 0 || fci > 0) {
       // 2

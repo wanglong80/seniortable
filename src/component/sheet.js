@@ -634,32 +634,6 @@ function sheetInitEvents() {
     this.focusing = overlayerEl.contains(evt.target);
   });
 
-  // bind(window, 'paste', (e) => {
-  //   let text = e.clipboardData.getData('text/plain');
-  //   text = encodeURIComponent(text);
-
-  //   console.log(text);
-  //   // 得到粘贴板内容的数组
-  //   const rowsArray = text.split('%0A');
-  //   if (rowsArray.length > 0) {
-  //     // 从excel 复制的数据最后一行会有空的回车符，这里要手动的去掉
-  //     if (rowsArray[rowsArray.length - 1].length === 0) {
-  //       rowsArray.splice(rowsArray.length - 1, 1);
-  //     }
-  //     for (let ri = 0; ri < rowsArray.length; ri++) {
-  //       const colsArray = rowsArray[ri].split('%09');
-
-  //       for (let ci = 0; ci < colsArray.length; ci++) {
-  //         const value = decodeURIComponent(colsArray[ci]);
-
-  //         this.data.setCellText(ri, ci, value);
-  //       }
-  //     }
-
-  //     this.table.render();
-  //   }
-  // });
-
   // for selector
   bind(window, 'keydown', (evt) => {
     if (!this.focusing) return;
@@ -857,6 +831,7 @@ export default class Sheet {
       this.modalValidation.el,
       this.sortFilter.el,
     );
+
     // table
     this.table = new Table(this.tableEl.el, data);
     sheetInitEvents.call(this);

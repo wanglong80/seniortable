@@ -1,5 +1,3 @@
-// import helper from '../helper';
-
 export default class History {
   constructor() {
     this.undoItems = [];

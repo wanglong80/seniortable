@@ -136,6 +136,14 @@ new Spreadsheet(document.getElementById('xss-demo'));
   - Delete row, column
   - Data validations
 
+## 公有方法
+方法 | 说明 |  数量
+-|-|-
+loadData(data) | 加载数据并渲染
+getData(data) | 获取当前表格数据 |  
+getCell(ri, ci) | 获取单元格数据 |
+setDataCellText(ri, ci, text) | 仅设置单元格文本，但不渲染到画布 | 
+
 ## Development
 
 ```sheel

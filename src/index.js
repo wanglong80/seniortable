@@ -4,16 +4,18 @@ import DataProxy from './core/data_proxy';
 import Sheet from './component/sheet';
 import { cssPrefix } from './config';
 import { locale } from './locale/locale';
-import paste from './plugins/paste';
+import Paste from './plugins/Paste';
 import './index.less';
 
 
 class Spreadsheet {
   constructor(selectors, options = {}) {
     let targetEl = selectors;
+
     if (typeof selectors === 'string') {
       targetEl = document.querySelector(selectors);
     }
+
     this.data = new DataProxy('sheet1', options);
     const rootEl = h('div', `${cssPrefix}`)
       .on('contextmenu', evt => evt.preventDefault());
@@ -21,7 +23,8 @@ class Spreadsheet {
     targetEl.appendChild(rootEl.el);
     this.sheet = new Sheet(rootEl, this.data);
 
-    this.addPlugin(paste);
+    // 默认安装所有内置插件
+    this.addPlugin(new Paste());
   }
 
 
@@ -29,7 +32,7 @@ class Spreadsheet {
 
   // 安装插件
   addPlugin(plugin) {
-    plugin(this);
+    plugin.setup.call(this);
   }
 
   // 加载数据并渲染到当前表格
@@ -43,6 +46,11 @@ class Spreadsheet {
     return this.data.getData();
   }
 
+  // 仅设置单元格文本，但不渲染到画布（渲染需调用 render 方法）
+  setDataCellText(ri, ci, text) {
+    return this.data.setCellText(ri, ci, text);
+  }
+
   // 获取单元格数据
   getCell(ri, ci) {
     return this.data.getCell(ri, ci);
@@ -51,6 +59,11 @@ class Spreadsheet {
   validate() {
     const { validations } = this.data;
     return validations.errors.size <= 0;
+  }
+
+  // 重绘渲染表格
+  render() {
+    return this.sheet.table.render();
   }
 
   // 公有事件
