@@ -1,5 +1,6 @@
 import { CellRange } from './cell_range';
 
+// 选中器类（类值对象）
 export default class Selector {
   constructor() {
     this.range = new CellRange(0, 0, 0, 0);

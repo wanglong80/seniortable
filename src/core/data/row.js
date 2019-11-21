@@ -1,5 +1,5 @@
-import helper from './helper';
-import { expr2expr } from './alphabet';
+import helper from '../helper';
+import { expr2expr } from '../alphabet';
 
 class Rows {
   constructor({ len, height }) {

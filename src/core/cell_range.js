@@ -1,5 +1,6 @@
 import { xy2expr, expr2xy } from './alphabet';
 
+// 单元格区域类
 class CellRange {
   constructor(sri, sci, eri, eci, w = 0, h = 0) {
     this.sri = sri;

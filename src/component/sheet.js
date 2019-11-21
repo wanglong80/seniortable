@@ -230,7 +230,12 @@ function sheetReset() {
   const vRect = this.getRect();
   tableEl.attr(vRect);
   overlayerEl.offset(vRect);
-  overlayerCEl.offset(tOffset);
+  overlayerCEl.offset({
+    width: tOffset.width,
+    height: tOffset.height,
+    left: tOffset.left,
+    top: tOffset.top - 1,
+  });
   el.css('width', `${vRect.width}px`);
   verticalScrollbarSet.call(this);
   horizontalScrollbarSet.call(this);
@@ -353,9 +358,11 @@ function editorSetOffset() {
   editor.setOffset(sOffset, sPosition);
 }
 
+// 单元格编辑处理函数
 function editorSet() {
-  const { editor, data } = this;
+  const { editor, selector, data } = this;
   editorSetOffset.call(this);
+  selector.hide(); // 单元格编辑时，选中器隐藏
   editor.setCell(data.getSelectedCell(), data.getSelectedValidator());
   clearClipboard.call(this);
 }
@@ -557,7 +564,7 @@ function sheetInitEvents() {
         } else {
           contextMenu.hide();
         }
-      } else if (evt.detail === 2) {
+      } else if (evt.detail === 2) { // 鼠标双击事件
         editorSet.call(this);
       } else {
         editor.clear();

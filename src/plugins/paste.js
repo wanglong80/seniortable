@@ -8,6 +8,10 @@ export default class Plugin {
       let text = e.clipboardData.getData('text/plain');
       text = encodeURIComponent(text);
 
+      const axis = this.getSelectedAxis();
+      const sri = axis.ri;
+      const sci = axis.ci;
+
       // 得到粘贴板内容的数组
       const rowsArray = text.split('%0A');
       if (rowsArray.length > 0) {
@@ -21,7 +25,7 @@ export default class Plugin {
 
           for (let ci = 0; ci < colsArray.length; ci += 1) {
             const value = decodeURIComponent(colsArray[ci]);
-            this.setDataCellText(ri, ci, value);
+            this.setDataCellText(ri + sri, ci + sci, value);
           }
         }
 

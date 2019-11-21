@@ -29,13 +29,14 @@ function resetTextareaSize() {
   }
 }
 
+// 单元格编辑文本事件
 function inputEventHandler(evt) {
   const v = evt.target.value;
   // console.log(evt, 'v:', v);
   const { suggest, textlineEl, validator } = this;
-  const cell = this.cell;
-  if(cell !== null){
-    if(("editable" in cell && cell.editable == true) || (cell['editable'] === undefined)) {
+  const { cell } = this;
+  if (cell !== null) {
+    if (('editable' in cell && cell.editable == true) || (cell.editable === undefined)) {
       this.inputText = v;
       if (validator) {
         if (validator.type === 'list') {
@@ -54,12 +55,10 @@ function inputEventHandler(evt) {
       textlineEl.html(v);
       resetTextareaSize.call(this);
       this.change('input', v);
-      }
-      else {
-        evt.target.value = "";
-      }
-  }
-  else {
+    } else {
+      evt.target.value = '';
+    }
+  } else {
     this.inputText = v;
     if (validator) {
       if (validator.type === 'list') {
@@ -78,7 +77,7 @@ function inputEventHandler(evt) {
     textlineEl.html(v);
     resetTextareaSize.call(this);
     this.change('input', v);
-    }
+  }
 }
 
 function setTextareaRange(position) {
@@ -213,7 +212,7 @@ export default class Editor {
         elOffset.left = freeze.w;
       }
       el.offset(elOffset);
-      areaEl.offset({ left: left - elOffset.left - 0.8, top: top - elOffset.top - 0.8 });
+      areaEl.offset({ left: left - elOffset.left - 0.8, top: top - elOffset.top });
       textEl.offset({ width: width - 9 + 0.8, height: height - 3 + 0.8 });
       const sOffset = { left: 0 };
       sOffset[suggestPosition] = height;

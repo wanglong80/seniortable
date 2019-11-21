@@ -255,8 +255,8 @@ function renderContentGrid({
 
   draw.save();
   draw.attr({
-    fillStyle: '#fff',
-    lineWidth: thinLineWidth,
+    // fillStyle: '#fff',
+    lineWidth: npxLine(),
     strokeStyle: '#ccc', // 单元格边线颜色
   })
     .translate(fw + tx, fh + ty);

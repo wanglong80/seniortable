@@ -56,6 +56,11 @@ class Spreadsheet {
     return this.data.getCell(ri, ci);
   }
 
+  // 获取选中单元格位置对象
+  getSelectedAxis() {
+    return this.data.selector;
+  }
+
   validate() {
     const { validations } = this.data;
     return validations.errors.size <= 0;

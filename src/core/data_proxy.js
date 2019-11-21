@@ -4,12 +4,12 @@ import Selector from './selector';
 import Scroll from './scroll';
 import History from './history';
 import Clipboard from './clipboard';
-import AutoFilter from './auto_filter';
-import { Merges } from './merge';
+import AutoFilter from './data/auto_filter';
+import { Merges } from './data/merge';
 import helper from './helper';
-import { Rows } from './row';
-import { Cols } from './col';
-import { Validations } from './validation';
+import { Rows } from './data/row';
+import { Cols } from './data/col';
+import { Validations } from './data/validation';
 import { CellRange } from './cell_range';
 import { expr2xy, xy2expr } from './alphabet';
 import { t } from '../locale/locale';
@@ -562,12 +562,14 @@ export default class DataProxy {
     // this.resetAutoFilter();
   }
 
+  // 取得当前选中的单元格的值对象
   getSelectedCell() {
     const { ri, ci } = this.selector;
     let nri = ri;
     if (this.unsortedRowMap.has(ri)) {
       nri = this.unsortedRowMap.get(ri);
     }
+
     return this.rows.getCell(nri, ci);
   }
 
@@ -1097,6 +1099,7 @@ export default class DataProxy {
     return this;
   }
 
+  // 获取数据
   getData() {
     const {
       name, freeze, styles, merges, rows, cols, validations, autoFilter,
