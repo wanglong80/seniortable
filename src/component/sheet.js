@@ -571,6 +571,7 @@ function sheetInitEvents() {
         overlayerMousedown.call(this, evt);
       }
     }).on('mousewheel.stop', (evt) => {
+      evt.preventDefault(); // mac下禁止左右翻页，禁止回弹效果
       overlayerMousescroll.call(this, evt);
     });
 

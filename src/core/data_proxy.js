@@ -93,10 +93,10 @@ const defaultSettings = {
     textwrap: false,
     strike: false,
     underline: false,
-    color: '#0a0a0a',
+    color: '#000',
     font: {
       name: 'Arial',
-      size: 10,
+      size: 9,
       bold: false,
       italic: false,
     },
