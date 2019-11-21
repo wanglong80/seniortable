@@ -215,6 +215,7 @@ function sheetFreeze() {
   selector.resetAreaOffset();
 }
 
+// 表格重置
 function sheetReset() {
   const {
     tableEl,
@@ -258,7 +259,6 @@ function cut() {
 }
 
 function paste(what) {
-  console.log(this);
   const { data } = this;
   if (data.paste(what, msg => xtoast('Tip', msg))) {
     sheetReset.call(this);
@@ -634,22 +634,31 @@ function sheetInitEvents() {
     this.focusing = overlayerEl.contains(evt.target);
   });
 
-  bind(window, 'paste', (e) => {
-    console.log(e.clipboardData.getData('text/plain'));
+  // bind(window, 'paste', (e) => {
+  //   let text = e.clipboardData.getData('text/plain');
+  //   text = encodeURIComponent(text);
 
-    const text = e.clipboardData.getData('text/plain');
-    // 得到粘贴板内容的数组
-    const textArray = text.split('\n');
-    if (textArray.length > 0) {
-      // 从excel 复制的数据最后一行会有空的回车符，这里要手动的去掉
-      if (textArray[textArray.length - 1].length === 0) {
-        textArray.splice(textArray.length - 1, 1);
-      }
-      for (let i = 0; i < textArray.length; i++) {
-        console.log(`项：${textArray[i]}`);
-      }
-    }
-  });
+  //   console.log(text);
+  //   // 得到粘贴板内容的数组
+  //   const rowsArray = text.split('%0A');
+  //   if (rowsArray.length > 0) {
+  //     // 从excel 复制的数据最后一行会有空的回车符，这里要手动的去掉
+  //     if (rowsArray[rowsArray.length - 1].length === 0) {
+  //       rowsArray.splice(rowsArray.length - 1, 1);
+  //     }
+  //     for (let ri = 0; ri < rowsArray.length; ri++) {
+  //       const colsArray = rowsArray[ri].split('%09');
+
+  //       for (let ci = 0; ci < colsArray.length; ci++) {
+  //         const value = decodeURIComponent(colsArray[ci]);
+
+  //         this.data.setCellText(ri, ci, value);
+  //       }
+  //     }
+
+  //     this.table.render();
+  //   }
+  // });
 
   // for selector
   bind(window, 'keydown', (evt) => {

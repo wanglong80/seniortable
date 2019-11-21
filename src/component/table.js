@@ -120,6 +120,7 @@ function renderAutofilter(viewRange) {
   }
 }
 
+// 渲染数据内容
 function renderContent(viewRange, fw, fh, tx, ty) {
   const { draw, data } = this;
   draw.save();
@@ -292,7 +293,9 @@ class Table {
     this.data = data;
   }
 
+  // 渲染（重绘）表格
   render() {
+    console.log('Table::render');
     // resize canvas
     const { data } = this;
     const { rows, cols } = data;
