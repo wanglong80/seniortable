@@ -61,7 +61,7 @@ class Spreadsheet {
   }
 
   // 仅设置单元格文本，但不渲染到画布（渲染需调用 render 方法）
-  setDataCellText(ri, ci, text) {
+  setCellText(ri, ci, text) {
     return this.data.setCellText(ri, ci, text);
   }
 
