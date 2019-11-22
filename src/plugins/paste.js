@@ -8,7 +8,7 @@ export default class Plugin {
       let text = e.clipboardData.getData('text');
       text = encodeURIComponent(text);
 
-      const axis = this.getSelectedAxis();
+      const axis = this.getSelector();
       const sri = axis.ri;
       const sci = axis.ci;
 
@@ -41,13 +41,13 @@ export default class Plugin {
 
         for (let ri = 0; ri < rowsArray.length; ri += 1) {
           let rowText = rowsArray[ri];
-          rowText = rowText.replace(/(?:%22)((?:%22)*)/ig, '$1');
+          rowText = rowText.replace(/(?:%22)((?:%22)*)/ig, '$1'); // 解决魔鬼引号问题
 
           const colsArray = rowText.split('%09'); // 间隔符
 
           for (let ci = 0; ci < colsArray.length; ci += 1) {
             const value = decodeURIComponent(colsArray[ci]);
-            this.setDataCellText(ri + sri, ci + sci, value);
+            this.data.setCellText(ri + sri, ci + sci, value);
           }
         }
 

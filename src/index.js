@@ -16,17 +16,21 @@ class Spreadsheet {
       targetEl = document.querySelector(selectors);
     }
 
-    this.data = new DataProxy('sheet1', options);
     const rootEl = h('div', `${cssPrefix}`)
       .on('contextmenu', evt => evt.preventDefault());
     // create canvas element
     targetEl.appendChild(rootEl.el);
+
+    // 数据对象
+    this.data = new DataProxy('sheet1', options);
+    // sheet 对象
     this.sheet = new Sheet(rootEl, this.data);
+    // 表格对象
+    this.table = this.sheet.table;
 
     // 默认安装所有内置插件
     this.addPlugin(new Paste());
   }
-
 
   // 公有方法
 
@@ -39,6 +43,16 @@ class Spreadsheet {
   loadData(data) {
     this.sheet.loadData(data);
     return this;
+  }
+
+  // 撤销
+  undo() {
+    return this.sheet.undo();
+  }
+
+  // 重做
+  redo() {
+    return this.sheet.redo();
   }
 
   // 获取数据
@@ -56,8 +70,8 @@ class Spreadsheet {
     return this.data.getCell(ri, ci);
   }
 
-  // 获取选中单元格位置对象
-  getSelectedAxis() {
+  // 获取当前焦点单元格的选中器对象
+  getSelector() {
     return this.data.selector;
   }
 
