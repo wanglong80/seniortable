@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+
+</head>
+
+<body onload="load()">
+  <div>
+    <button onclick="window.console.log(ST.getData())">获取数据</button>
+    <button onclick="window.console.log(ST.data.getSelectedCell())">获取选中的单元格</button>
+    <button onclick="window.console.log(ST.data.getSelectedRect())">获取选中的单元格矩形属性</button>
+    <button onclick="window.console.log(ST.getSelectedAxis())">获取选中器对象</button>
+    <button onclick="ST.undo()">撤销</button>
+    <button onclick="ST.redo()">重做</button>
+    <button onclick="ST.setSelectedCellAttr('font-bold', true)">加粗</button>
+  </div>
+  <div id="seniortable-demo"></div>
+  <script>
+    function load() {
+      window.ST = seniortable('#seniortable-demo', { showToolbar: true, showGrid: true })
+        .loadData({
+          //freeze: 'B3',
+          styles: [
+            {
+              bgcolor: '#f4f5f8',
+              textwrap: true,
+              color: '#900b09',
+              border: {
+                top: ['thin', '#0366d6'],
+                bottom: ['thin', '#0366d6'],
+                right: ['thin', '#0366d6'],
+                left: ['thin', '#0366d6'],
+              },
+            },
+          ],
+          // merges: [
+          //   'C3:D4',
+          // ],
+          // rows: {
+          //   1: {
+          //     cells: {
+          //       0: { text: 'testingtesttestetst' },
+          //       2: { text: 'testing' },
+          //     },
+          //   },
+          //   2: {
+          //     cells: {
+          //       0: { text: 'render', style: 0 },
+          //       1: { text: 'Hello' },
+          //       2: { text: 'haha', merge: [1, 1] },
+          //     }
+          //   },
+          //   8: {
+          //     cells: {
+          //       8: { text: 'border test', style: 0 },
+          //     }
+          //   }
+          // },
+        }).onChange((data) => {
+          console.log('触发 onChange 事件', data);
+        });
+    }
+  </script>
+</body>
+
+</html>
