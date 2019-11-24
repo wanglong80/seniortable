@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    #seniortable {
+      height: 80vh;
+    }
+  </style>
+</head>
+
+<body onload="load()">
+  <div style="margin: 10px">
+    <button onclick="window.console.log(ST.getData())">获取数据</button>
+    <button onclick="window.console.log(ST.getSelected())">获取当前坐标</button>
+    <button onclick="
+    const {sri, sci} = ST.getSelected();
+    window.console.log(ST.getCell(sri, sci))">获取选中的单元格</button>
+    <button onclick="
+     const {sri, sci} = ST.getSelected();
+     ST.setText(sri, sci, 'test').render()">设置单元格文本</button>
+    <button onclick="
+    const {sri} = ST.getSelected();
+    ST.insertRows(sri, 1).render()">向上插入1行</button>
+    <button onclick="
+    const {sci} = ST.getSelected();
+    ST.insertColumns(sci, 1).render()">向左插入1列</button>
+    <button onclick="ST.deleteRows(1, 3).render()">删除行</button>
+    <button onclick="ST.deleteColumns(1, 3).render()">删除列</button>
+    <button onclick="ST.undo()">撤销</button>
+    <button onclick="ST.redo()">重做</button>
+    <button onclick="
+    const {sri, sci, eri, eci} = ST.getSelected();
+    ST.setStyle(sri, sci, eri, eci, 'font-bold', true)">加粗</button>
+    <button
+      onclick="
+    const {sri, sci, eri, eci} = ST.getSelected();
+    ST.setStyle(sri, sci, eri, eci, 'border',  {mode: 'all', style:'dashed', color:'#fe0000'}).render()">设置边框样式</button>
+    <button onclick="
+    const {sri, sci, eri, eci} = ST.getSelected();
+    ST.merge(sri, sci, eri, eci).render()">合并选中单元格</button>
+    <button onclick="
+    const {sri, sci, eri, eci} = ST.getSelected();
+    ST.unmerge(sri, sci, eri, eci).render()">拆分选中单元格</button>
+    <button onclick="ST.freeze(3,3)">冻结指定行和列</button>
+    <button onclick="ST.freeze(0,0)">解除冻结</button>
+    <button onclick="ST.formulaSelectedCell('SUM').render()">选中单元格计算公式</button>
+  </div>
+  <div id="seniortable"></div>
+  <script>
+    function load() {
+      window.ST = seniortable(document.querySelector('#seniortable'), { editable: true })
+        .loadData({}).onChange((data) => {
+          //console.log('触发 onChange 事件', data);
+        }).onKeyDown(evt => {
+          //console.log('表格存在焦点时触发键盘事件', evt);
+        });
+    }
+  </script>
+</body>
+
+</html>

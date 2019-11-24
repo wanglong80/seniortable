@@ -1,0 +1,189 @@
+.seniortable {
+  font-size: 12px;
+  line-height: normal;
+  user-select: none;
+  -moz-user-select: none;
+  font-family: 'Lato', 'Source Sans Pro', Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: content-box;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  -webkit-overflow-scrolling: auto;
+  width: inherit;
+  height: inherit;
+}
+
+.seniortable * {
+  box-sizing: content-box;
+}
+
+.seniortable textarea {
+  font: 400 12px Arial, 'Lato', 'Source Sans Pro', Roboto, Helvetica, sans-serif;
+}
+
+.seniortable-sheet {
+  position: relative;
+  overflow: hidden;
+}
+
+.seniortable-table {
+  vertical-align: bottom;
+}
+
+/* resizer **/
+.seniortable-resizer {
+  position: absolute;
+  z-index: 11;
+}
+
+.seniortable-resizer .seniortable-resizer-hover {
+  background-color: rgba(75, 137, 255, .25);
+}
+
+.seniortable-resizer .seniortable-resizer-line {
+  position: absolute;
+}
+
+.seniortable-resizer.horizontal {
+  cursor: row-resize;
+}
+
+.seniortable-resizer.horizontal .seniortable-resizer-line {
+  border-bottom: 2px dashed rgb(75, 137, 255);
+  left: 0;
+  bottom: 0;
+}
+
+.seniortable-resizer.vertical {
+  cursor: col-resize;
+}
+
+.seniortable-resizer.vertical  .seniortable-resizer-line {
+  border-right: 2px dashed rgb(75, 137, 255);
+  top: 0;
+  right: 0;
+}
+
+/* scrollbar */
+.seniortable-scrollbar {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  opacity: 0.9;
+  z-index: 12;
+}
+
+.seniortable-scrollbar.horizontal {
+  right: 15px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+.seniortable-scrollbar.horizontal > div {
+  height: 20px;
+}
+
+.seniortable-scrollbar.vertical {
+  bottom: 15px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.seniortable-scrollbar.vertical > div {
+  width: 20px;
+}
+
+.seniortable-scrollbar:hover {
+}
+
+/* seniortable-overlayer */
+.seniortable-overlayer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.seniortable-overlayer-content {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+.seniortable-editor, .seniortable-selector {
+  box-sizing: content-box;
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* seniortable-selector */
+.seniortable-selector {
+  
+}
+
+.seniortable-selector .seniortable-selector-area {
+  position: absolute;
+  border: 2px solid rgb(75, 137, 255);
+  background: rgba(75, 137, 255, .1);
+}
+
+.seniortable-selector .seniortable-selector-autofill {
+  position: absolute;	
+  background: transparent;	
+  z-index: 100;	
+  border: 1px dashed rgba(0, 0, 0, .45);
+}
+.seniortable-selector .seniortable-selector-corner {
+  pointer-events: auto;
+  position: absolute;
+  cursor: crosshair;
+  font-size: 0;
+  height: 5px;
+  width: 5px;
+  right: -5px;
+  bottom: -5px;
+  border: 2px solid rgb(255, 255, 255);
+  background: rgb(75, 137, 255);
+}
+  
+.seniortable-editor {
+  z-index: 20;
+}
+
+.seniortable-editor-area {
+  position: absolute;
+  text-align: left;
+  border: 2px solid rgb(75, 137, 255);
+  line-height: 0;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.seniortable-editor-area textarea {
+  box-sizing: content-box;
+    border: none;
+    padding: 0 3px;
+    outline-width: 0;
+    resize: none;
+    text-align: start;
+    overflow-y: hidden;
+    font: 400 12px Arial, 'Lato', 'Source Sans Pro', Roboto, Helvetica, sans-serif;
+    color: inherit;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 22px;
+    margin: 0;
+}
+
+.seniortable-editor-area .textline {
+  overflow: hidden;
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
