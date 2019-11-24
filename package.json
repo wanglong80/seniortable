@@ -12,7 +12,7 @@
   "license": "GPL",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wanglong6/seniortable.git"
+    "url": "https://github.com/wanglong617/seniortable.git"
   },
   "nyc": {
     "all": true,

@@ -47,7 +47,7 @@ export default class Plugin {
 
           for (let ci = 0; ci < colsArray.length; ci += 1) {
             const value = decodeURIComponent(colsArray[ci]);
-            this.data.setCellText(ri + sri, ci + sci, value);
+            this.setCellText(ri + sri, ci + sci, value);
           }
         }
 

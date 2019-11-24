@@ -488,9 +488,9 @@ export default class DataProxy {
         if (value) this.merge();
         else this.unmerge();
       } else if (property === 'border') {
+        console.log(property, value);
         setStyleBorders.call(this, value);
       } else if (property === 'formula') {
-        // console.log('>>>', selector.multiple());
         const { ri, ci, range } = selector;
         if (selector.multiple()) {
           const [rn, cn] = selector.size();

@@ -107,20 +107,28 @@ data | 表格数据
 property | 属性
 value | 值
 
-#### 附录1. 单元格属性列表
-属性名 | 值 | 说明
+#### 附录2. 单元格属性列表
+属性 | 值 | 说明
 -|-|-
 font-name | string | 文本字体
-font-size | px | 文本字号
+font-size | 8 ~ 20 | 文本字号（单位像素）
 font-bold | true / false | 字体是否加粗
 font-italic | true / false | 文本是否斜体
 underline | true / false | 文本是否有下划线
 strike | true / false | 文本是否有删除线
-color | string | 文本颜色十六进制码
-bgcolor | string | 单元格背景颜色十六进制码
+color | #FFFFFF | 文本颜色十六进制码
+bgcolor | #FFFFFF | 单元格背景颜色十六进制码
 align | left / center/ right | 文本水平对齐方式
 valign | top / middle/ bottom | 文本垂直对齐方式
 textwrap | true / false | 文本是否自动换行
+border | {...} | 边框样式对象 `附录3`
+
+#### 附录3. 单元格边框样式对象
+属性 | 值 | 说明
+-|-|-
+mode | all / inside / horizontal / vertical / outside / top / bottom / left / right | 边线位置
+style | thin / medium / thick / dashed / dotted | 边线样式
+color | #FFFFFF | 边线颜色十六进制码
 
 ### 公有事件
 事件 | 回调参数 |  说明

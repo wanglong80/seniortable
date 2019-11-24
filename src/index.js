@@ -3,7 +3,6 @@ import { h } from './component/element';
 import DataProxy from './core/data_proxy';
 import Sheet from './component/sheet';
 import { cssPrefix } from './config';
-import { locale } from './locale/locale';
 import Paste from './plugins/paste';
 import './index.less';
 
