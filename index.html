@@ -11,11 +11,12 @@
 <body onload="load()">
   <div style="margin: 10px">
     <button onclick="window.console.log(ST.getData())">获取数据</button>
+    <button onclick="window.console.log(ST.getSelectedCoords())">获取当前坐标</button>
     <button onclick="window.console.log(ST.getSelectedCell())">获取选中的单元格</button>
-    <button onclick="ST.insertSelectedRows(2)">向上插入2行</button>
-    <button onclick="ST.insertSelectedColumns(2).render()">向右插入2列</button>
-    <button onclick="ST.deleteSelectedRows()">删除选中的行</button>
-    <button onclick="ST.deleteSelectedColumns()">删除选中的列</button>
+    <button onclick="ST.insertRows(2, 1)">向上插入2行</button>
+    <button onclick="ST.insertColumns(2, 1).render()">向右插入2列</button>
+    <button onclick="ST.deleteRows(1, 3).render()">删除行</button>
+    <button onclick="ST.deleteColumns(1, 3).render()">删除列</button>
     <button onclick="ST.undo()">撤销</button>
     <button onclick="ST.redo()">重做</button>
     <button onclick="ST.setSelectedCellAttr('font-bold', true)">加粗</button>

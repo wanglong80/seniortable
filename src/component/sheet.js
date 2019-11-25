@@ -334,7 +334,7 @@ function overlayerMousedown(evt) {
         }
       }
       selector.hideAutofill();
-    //  toolbarChangePaintformatPaste.call(this);
+      //  toolbarChangePaintformatPaste.call(this);
     });
   }
 
@@ -714,7 +714,7 @@ function sheetInitEvents() {
           break;
         case 66:
           // ctrl + B
-        //  toolbar.trigger('bold');
+          //  toolbar.trigger('bold');
           break;
         case 73:
           // ctrl + I
@@ -794,7 +794,7 @@ function sheetInitEvents() {
 
 export default class Sheet {
   constructor(targetEl, data) {
-    const { view, showToolbar, showContextmenu } = data.settings;
+    const { showContextmenu } = data.settings;
     this.el = h('div', `${cssPrefix}-sheet`);
     // this.toolbar = new Toolbar(data, view.width, !showToolbar);
     targetEl.children(this.el);

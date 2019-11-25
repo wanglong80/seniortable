@@ -108,32 +108,32 @@ class Seniortable {
     return this.data.getSelectedCell();
   }
 
-  // 获取当前焦点单元格的选中器对象
-  getSelector() {
-    return this.data.selector;
+  // 获取当前选中的坐标数据
+  getSelectedCoords() {
+    return { ... this.data.selector.range };
   }
 
   // 向上插入n行
-  insertSelectedRows(n) {
-    this.data.insert('row', n);
+  insertRows(sri, n) {
+    this.data.insert('row', sri, n);
     return this;
   }
 
-  // 当前选择列向右插入n列
-  insertSelectedColumns(n) {
-    this.data.insert('column', n);
+  // 向左插入n列
+  insertColumns(sci, n) {
+    this.data.insert('column', sci, n);
     return this;
   }
 
   // 删除选择的行
-  deleteSelectedRows() {
-    this.data.delete('row');
+  deleteRows(sri, eri) {
+    this.data.delete('row', sri, eri);
     return this;
   }
 
   // 删除选择的列
-  deleteSelectedColumns() {
-    this.data.delete('column');
+  deleteColumns(sci, eci) {
+    this.data.delete('column', sci, eci);
     return this;
   }
 

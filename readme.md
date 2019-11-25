@@ -138,15 +138,35 @@ npm run dev
 </tr>
 <tr>
     <td>
-      <div><b>deleteSelectedRows()</b></div>
+      <div><b>insertRows(sri, n)</b></div>
+      <div><sub>@param integer sri - 起始行</sub></div>
+      <div><sub>@param integer n - 插入行数</sub></div>
     </td>
-    <td>删除选中的行</td>
+    <td>从起始行向上插入行</td>
 </tr>
 <tr>
     <td>
-      <div><b>deleteSelectedColumns()</b></div>
+      <div><b>insertColumns(sci, n)</b></div>
+      <div><sub>@param integer sci - 起始列</sub></div>
+      <div><sub>@param integer n - 插入列数</sub></div>
     </td>
-    <td>删除选中的列</td>
+    <td>从起始列向左插入列</td>
+</tr>
+<tr>
+    <td>
+      <div><b>deleteRows(sri, eri)</b></div>
+      <div><sub>@param integer sri - 起始行索引</sub></div>
+      <div><sub>@param integer eri - 结束行索引</sub></div>
+    </td>
+    <td>删除行</td>
+</tr>
+<tr>
+    <td>
+      <div><b>deleteColumns(sci, eci)</b></div>
+      <div><sub>@param integer sci - 起始列索引</sub></div>
+      <div><sub>@param integer eci - 结束列索引</sub></div>
+    </td>
+    <td>删除列</td>
 </tr>
 <tr>
     <td>
@@ -165,7 +185,7 @@ npm run dev
       <div><sub>@param string property - 属性</sub></div>
       <div><sub>@param string value - 值</sub></div>
     </td>
-    <td>设置单元格属性</td>
+    <td>设置单元格属性，见`附录2`</td>
 </tr>
 <tr>
     <td>
@@ -173,7 +193,7 @@ npm run dev
       <div><sub>@param string property - 属性</sub></div>
       <div><sub>@param string value - 值</sub></div>
     </td>
-    <td>设置单元格属性</td>
+    <td>设置选中的单元格属性</td>
 </tr>
 <tr>
     <td>
@@ -203,35 +223,7 @@ npm run dev
 </tr>
 </table> 
 
-方法 | 说明
--|-
-loadData(data) <br> @param json data: 数据 | 载入全部数据
-getData() | 获取全部数据  
-undo() | 撤销
-redo() | 重做
-render() | 渲染重绘表格
-getCell(ri, ci) <br> @param int ri: 行索引<br>@param int ci: 列索引 | 获取单元格数据 |
-getSelectedCell() | 获取选中的单元格数据，多个单元格只取左上角的 |
-deleteSelectedRows() | 删除选中的行 |
-deleteSelectedColumns() | 删除选中的列 |
-setCellText(ri, ci, text) <br> @param int ri: 行索引<br>@param int ci: 列索引<br>@param string text: 文本 | 设置单元格文本
-setCellAttr(ri, ci, property, value) <br> @param int ri: 行索引<br>@param int ci: 列索引<br>@param string property: 属性<br>@param string value: 值 | 设置单元格属性
-setSelectedCellAttr(property, value) <br> @param string property: 属性<br>@param string value: 值 | 设置选中的单元格属性
-mergeSelectedCells() | 合并选中的单元格
-unmergeSelectedCells() | 拆分选中的单元格
-formulaSelectedCell() | 选中的单元格计算公式
-freeze(ri, ci) | 冻结指定行和列，设置(0,0) 可以解除冻结
-
-#### 附录1. 参数含义对照表
-参数 | 含义
--|-
-ri | 行的索引
-ci | 列的索引
-data | 表格数据
-property | 属性
-value | 值
-
-#### 附录2. 单元格属性列表
+#### 附录1. 单元格属性列表
 属性 | 值 | 说明
 -|-|-
 font-name | string | 文本字体
@@ -245,9 +237,9 @@ bgcolor | #FFFFFF | 单元格背景颜色十六进制码
 align | left / center/ right | 文本水平对齐方式
 valign | top / middle/ bottom | 文本垂直对齐方式
 textwrap | true / false | 文本是否自动换行
-border | {...} | 边框样式对象 `附录3`
+border | {...} | 边框样式对象 `附录2`
 
-#### 附录3. 单元格边框样式对象
+#### 附录2. 单元格边框样式对象
 属性 | 值 | 说明
 -|-|-
 mode | all / inside / horizontal / vertical / outside / top / bottom / left / right | 边线模式

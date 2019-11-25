@@ -448,9 +448,9 @@ export default class DataProxy {
     if (ri < 0) nri = rows.len - 1;
     if (ci < 0) nci = cols.len - 1;
     if (nri > cri) [sri, eri] = [cri, nri];
-    else [sri, eri] = [nri, cri];
+    else[sri, eri] = [nri, cri];
     if (nci > cci) [sci, eci] = [cci, nci];
-    else [sci, eci] = [nci, cci];
+    else[sci, eci] = [nci, cci];
     selector.range = merges.union(new CellRange(
       sri, sci, eri, eci,
     ));
@@ -807,7 +807,7 @@ export default class DataProxy {
   }
 
   // type: row | column
-  insert(type, n = 1) {
+  insertSelected(type, n = 1) {
     this.changeData(() => {
       const { sri, sci } = this.selector.range;
       const { rows, merges, cols } = this;
@@ -827,8 +827,26 @@ export default class DataProxy {
     });
   }
 
+  // si 插入起始位
+  insert(type, si, n = 1) {
+    this.changeData(() => {
+      const { rows, merges, cols } = this;
+      if (type === 'row') {
+        rows.insert(si, n);
+      } else if (type === 'column') {
+        rows.insertColumn(si, n);
+        cols.len += 1;
+      }
+      merges.shift(type, si, n, (ri, ci, rn, cn) => {
+        const cell = rows.getCell(ri, ci);
+        cell.merge[0] += rn;
+        cell.merge[1] += cn;
+      });
+    });
+  }
+
   // type: row | column
-  delete(type) {
+  delete2(type) {
     this.changeData(() => {
       const {
         rows, merges, selector, cols,
@@ -845,6 +863,40 @@ export default class DataProxy {
       } else if (type === 'column') {
         rows.deleteColumn(sci, eci);
         si = range.sci;
+        size = csize;
+        cols.len -= 1;
+      }
+      // console.log('type:', type, ', si:', si, ', size:', size);
+      merges.shift(type, si, -size, (ri, ci, rn, cn) => {
+        // console.log('ri:', ri, ', ci:', ci, ', rn:', rn, ', cn:', cn);
+        const cell = rows.getCell(ri, ci);
+        cell.merge[0] += rn;
+        cell.merge[1] += cn;
+        if (cell.merge[0] === 0 && cell.merge[1] === 0) {
+          delete cell.merge;
+        }
+      });
+    });
+  }
+
+  delete(type, si, ei) {
+    const range = new CellRange(si, si, ei, ei);
+    this.changeData(() => {
+      const {
+        rows, merges, cols,
+      } = this;
+      // const { range } = selector;
+      // const {
+      //   sri, sci, eri, eci,
+      // } = selector.range;
+      const [rsize, csize] = range.size();
+      // let si = sri;
+      let size = rsize;
+      if (type === 'row') {
+        rows.delete(si, ei);
+      } else if (type === 'column') {
+        rows.deleteColumn(si, ei);
+        // si = range.sci;
         size = csize;
         cols.len -= 1;
       }
