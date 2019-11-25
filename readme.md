@@ -94,17 +94,112 @@ npm run dev
 <tr>
     <td>
       <b>loadData(data)</b>
-      <div><sub>@param json data: 数据</sub></div>
+      <div><sub>@param json data - 数据</sub></div>
     </td>
     <td>载入全部数据</td>
 </tr>
 <tr>
     <td>
-      <div><b>getCell(ri, ci)</b></div>
-      <div><sub>@param int ri: 行索引</sub></div>
-      <div><sub>@param int ci: 列索引</sub></div>
+      <div><b>getData()</b></div>
     </td>
-    <td>载入全部数据</td>
+    <td>获取全部数据</td>
+</tr>
+<tr>
+    <td>
+      <div><b>undo()</b></div>
+    </td>
+    <td>撤销</td>
+</tr>
+<tr>
+    <td>
+      <div><b>redo()</b></div>
+    </td>
+    <td>重做</td>
+</tr>
+<tr>
+    <td>
+      <div><b>render()</b></div>
+    </td>
+    <td>渲染重绘表格</td>
+</tr>
+<tr>
+    <td>
+      <div><b>getCell(ri, ci)</b></div>
+      <div><sub>@param integer ri - 行索引</sub></div>
+      <div><sub>@param integer ci - 列索引</sub></div>
+    </td>
+    <td>获取单元格数据</td>
+</tr>
+<tr>
+    <td>
+      <div><b>getSelectedCell()</b></div>
+    </td>
+    <td>获取选中的单元格数据，多个单元格只取左上角的</td>
+</tr>
+<tr>
+    <td>
+      <div><b>deleteSelectedRows()</b></div>
+    </td>
+    <td>删除选中的行</td>
+</tr>
+<tr>
+    <td>
+      <div><b>deleteSelectedColumns()</b></div>
+    </td>
+    <td>删除选中的列</td>
+</tr>
+<tr>
+    <td>
+      <div><b>setCellText(ri, ci, text)</b></div>
+      <div><sub>@param integer ri - 行索引</sub></div>
+      <div><sub>@param integer ci - 列索引</sub></div>
+      <div><sub>@param string text - 文本</sub></div>
+    </td>
+    <td>设置单元格文本</td>
+</tr>
+<tr>
+    <td>
+      <div><b>setCellAttr(ri, ci, property, value)</b></div>
+      <div><sub>@param integer ri - 行索引</sub></div>
+      <div><sub>@param integer ci - 列索引</sub></div>
+      <div><sub>@param string property - 属性</sub></div>
+      <div><sub>@param string value - 值</sub></div>
+    </td>
+    <td>设置单元格属性</td>
+</tr>
+<tr>
+    <td>
+      <div><b>setSelectedCellAttr(property, value)</b></div>
+      <div><sub>@param string property - 属性</sub></div>
+      <div><sub>@param string value - 值</sub></div>
+    </td>
+    <td>设置单元格属性</td>
+</tr>
+<tr>
+    <td>
+      <div><b>mergeSelectedCells()</b></div>
+    </td>
+    <td>合并选中的单元格</td>
+</tr>
+<tr>
+    <td>
+      <div><b>unmergeSelectedCells()</b></div>
+    </td>
+    <td>拆分选中的单元格</td>
+</tr>
+<tr>
+    <td>
+      <div><b>formulaSelectedCell()</b></div>
+    </td>
+    <td>选中的单元格计算公式</td>
+</tr>
+<tr>
+    <td>
+      <div><b>freeze(ri, ci)</b></div>
+      <div><sub>@param integer ri - 行索引</sub></div>
+      <div><sub>@param integer ci - 列索引</sub></div>
+    </td>
+    <td>冻结指定行和列，设置(0,0) 可以解除冻结</td>
 </tr>
 </table> 
 
