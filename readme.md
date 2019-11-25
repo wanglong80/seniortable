@@ -98,7 +98,7 @@ npm run dev
 </table> 
 
 方法 | 说明
--|-|-
+-|-
 loadData(data) <br> @param json data: 数据 | 载入全部数据
 getData() | 获取全部数据  
 undo() | 撤销
