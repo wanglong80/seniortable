@@ -94,15 +94,15 @@ npm run dev
 <tr>
     <td>
       <b>loadData(data)</b>
-      <p><small>@param json data: 数据</small></p>
+      <div><sub>@param json data: 数据</sub></div>
     </td>
     <td>载入全部数据</td>
 </tr>
 <tr>
     <td>
-      <b>getCell(ri, ci)</b>
-      <p><small>@param int ri: 行索引</small></p>
-      <p><small>@param int ci: 列索引</small></p>
+      <div><b>getCell(ri, ci)</b></div>
+      <div><sub>@param int ri: 行索引</sub></div>
+      <div><sub>@param int ci: 列索引</sub></div>
     </td>
     <td>载入全部数据</td>
 </tr>
