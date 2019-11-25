@@ -223,7 +223,6 @@ function sheetReset() {
     overlayerEl,
     overlayerCEl,
     table,
-    toolbar,
     selector,
     el,
   } = this;

@@ -11,13 +11,19 @@
 <body onload="load()">
   <div>
     <button onclick="window.console.log(ST.getData())">获取数据</button>
-    <button onclick="window.console.log(ST.data.getSelectedCell())">获取选中的单元格</button>
+    <button onclick="window.console.log(ST.getSelectedCell())">获取选中的单元格</button>
     <button onclick="window.console.log(ST.data.getSelectedRect())">获取选中的单元格矩形属性</button>
     <button onclick="window.console.log(ST.getSelectedAxis())">获取选中器对象</button>
     <button onclick="ST.undo()">撤销</button>
     <button onclick="ST.redo()">重做</button>
     <button onclick="ST.setSelectedCellAttr('font-bold', true)">加粗</button>
-    <button onclick="ST.setSelectedCellAttr('border', {mode: 'all', style:'dashed', color: '#fe0000'})">边框样式</button>
+    <button
+      onclick="ST.setSelectedCellAttr('border', {mode: 'all', style:'dashed', color: '#fe0000'}).render()">设置边框样式</button>
+    <button onclick="ST.mergeSelectedCells().render()">合并选中单元格</button>
+    <button onclick="ST.unmergeSelectedCells().render()">拆分选中单元格</button>
+    <button onclick="ST.freeze(3,3)">冻结指定行和列</button>
+    <button onclick="ST.freeze(0,0)">解除冻结</button>
+    <button onclick="ST.formulaSelectedCell('SUM').render()">选中单元格计算公式</button>
   </div>
   <div id="seniortable-demo"></div>
   <script>

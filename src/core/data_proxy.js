@@ -488,7 +488,6 @@ export default class DataProxy {
         if (value) this.merge();
         else this.unmerge();
       } else if (property === 'border') {
-        console.log(property, value);
         setStyleBorders.call(this, value);
       } else if (property === 'formula') {
         const { ri, ci, range } = selector;
@@ -514,6 +513,33 @@ export default class DataProxy {
         selector.range.each((ri, ci) => {
           this.setCellAttr(ri, ci, property, value);
         });
+      }
+    });
+  }
+
+  // 为选中的单元格计算公式
+  formulaSelectedCell(formula) {
+    const { selector, rows } = this;
+    const { ri, ci, range } = selector;
+
+    this.changeData(() => {
+      if (selector.multiple()) {
+        const [rn, cn] = selector.size();
+        const {
+          sri, sci, eri, eci,
+        } = range;
+        if (rn > 1) {
+          for (let i = sci; i <= eci; i += 1) {
+            const cell = rows.getCellOrNew(eri + 1, i);
+            cell.text = `=${formula}(${xy2expr(i, sri)}:${xy2expr(i, eri)})`;
+          }
+        } else if (cn > 1) {
+          const cell = rows.getCellOrNew(ri, eci + 1);
+          cell.text = `=${formula}(${xy2expr(sci, ri)}:${xy2expr(eci, ri)})`;
+        }
+      } else {
+        const cell = rows.getCellOrNew(ri, ci);
+        cell.text = `=${formula}()`;
       }
     });
   }

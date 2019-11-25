@@ -96,7 +96,11 @@ render() | 渲染重绘表格
 getCell(ri, ci) | 获取单元格数据 |
 setCellText(ri, ci, text) | 设置单元格文本
 setCellAttr(ri, ci, property, value) | 设置单元格属性 `附录2`
-setSelectedCellAttr(property, value) | 设置当前选中的单元格属性 `附录2`
+setSelectedCellAttr(property, value) | 设置选中的单元格属性 `附录2`
+mergeSelectedCells() | 合并选中的单元格
+unmergeSelectedCells() | 拆分选中的单元格
+formulaSelectedCell() | 选中的单元格计算公式
+freeze(ri, ci) | 冻结指定行和列，设置(0,0) 可以解除冻结
 
 #### 附录1. 参数含义对照表
 参数 | 含义
@@ -126,7 +130,7 @@ border | {...} | 边框样式对象 `附录3`
 #### 附录3. 单元格边框样式对象
 属性 | 值 | 说明
 -|-|-
-mode | all / inside / horizontal / vertical / outside / top / bottom / left / right | 边线位置
+mode | all / inside / horizontal / vertical / outside / top / bottom / left / right | 边线模式
 style | thin / medium / thick / dashed / dotted | 边线样式
 color | #FFFFFF | 边线颜色十六进制码
 

@@ -70,7 +70,32 @@ class Seniortable {
 
   // 设置当前选中的单元格样式
   setSelectedCellAttr(property, value) {
-    return this.data.setSelectedCellAttr(property, value);
+    this.data.setSelectedCellAttr(property, value);
+    return this;
+  }
+
+  // 合并当前选中的单元格
+  mergeSelectedCells() {
+    this.data.merge();
+    return this;
+  }
+
+  // 拆分当前选中的单元格
+  unmergeSelectedCells() {
+    this.data.unmerge();
+    return this;
+  }
+
+  // 冻结指定行和列
+  freeze(ri, ci) {
+    this.sheet.freeze(ri, ci);
+    return this;
+  }
+
+  // 未选中的单元格计算公式
+  formulaSelectedCell(formula) {
+    this.data.formulaSelectedCell(formula);
+    return this;
   }
 
   // 获取单元格数据
