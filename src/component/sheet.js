@@ -7,7 +7,7 @@ import Selector from './selector';
 import Editor from './editor';
 import ContextMenu from './contextmenu';
 import Table from './table';
-import Toolbar from './toolbar/index';
+// import Toolbar from './toolbar/index';
 import ModalValidation from './modal_validation';
 import SortFilter from './sort_filter';
 import { xtoast } from './message';
@@ -54,7 +54,7 @@ function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
   } else {
     selector.set(ri, ci, indexesUpdated);
   }
-  toolbar.reset();
+  // toolbar.reset();
   table.render();
 }
 
@@ -276,14 +276,14 @@ function autofilter() {
   sheetReset.call(this);
 }
 
-function toolbarChangePaintformatPaste() {
-  const { toolbar } = this;
-  if (toolbar.paintformatActive()) {
-    paste.call(this, 'format');
-    clearClipboard.call(this);
-    toolbar.paintformatToggle();
-  }
-}
+// function toolbarChangePaintformatPaste() {
+//   const { toolbar } = this;
+//   if (toolbar.paintformatActive()) {
+//     paste.call(this, 'format');
+//     clearClipboard.call(this);
+//     toolbar.paintformatToggle();
+//   }
+// }
 
 function overlayerMousedown(evt) {
   // console.log(':::::overlayer.mousedown:', evt.detail, evt.button, evt.buttons, evt.shiftKey);
@@ -334,7 +334,7 @@ function overlayerMousedown(evt) {
         }
       }
       selector.hideAutofill();
-      toolbarChangePaintformatPaste.call(this);
+    //  toolbarChangePaintformatPaste.call(this);
     });
   }
 
@@ -493,42 +493,42 @@ function insertDeleteRowColumn(type) {
   sheetReset.call(this);
 }
 
-function toolbarChange(type, value) {
-  const { data } = this;
-  if (type === 'undo') {
-    this.undo();
-  } else if (type === 'redo') {
-    this.redo();
-  } else if (type === 'print') {
-    // print
-  } else if (type === 'paintformat') {
-    if (value === true) copy.call(this);
-    else clearClipboard.call(this);
-  } else if (type === 'clearformat') {
-    insertDeleteRowColumn.call(this, 'delete-cell-format');
-  } else if (type === 'link') {
-    // link
-  } else if (type === 'chart') {
-    // chart
-  } else if (type === 'autofilter') {
-    // filter
-    autofilter.call(this);
-  } else if (type === 'freeze') {
-    if (value) {
-      const { ri, ci } = data.selector;
-      this.freeze(ri, ci);
-    } else {
-      this.freeze(0, 0);
-    }
-  } else {
-    // 更改单元格样式
-    data.setSelectedCellAttr(type, value);
-    if (type === 'formula' && !data.selector.multiple()) {
-      editorSet.call(this);
-    }
-    sheetReset.call(this);
-  }
-}
+// function toolbarChange(type, value) {
+//   const { data } = this;
+//   if (type === 'undo') {
+//     this.undo();
+//   } else if (type === 'redo') {
+//     this.redo();
+//   } else if (type === 'print') {
+//     // print
+//   } else if (type === 'paintformat') {
+//     if (value === true) copy.call(this);
+//     else clearClipboard.call(this);
+//   } else if (type === 'clearformat') {
+//     insertDeleteRowColumn.call(this, 'delete-cell-format');
+//   } else if (type === 'link') {
+//     // link
+//   } else if (type === 'chart') {
+//     // chart
+//   } else if (type === 'autofilter') {
+//     // filter
+//     autofilter.call(this);
+//   } else if (type === 'freeze') {
+//     if (value) {
+//       const { ri, ci } = data.selector;
+//       this.freeze(ri, ci);
+//     } else {
+//       this.freeze(0, 0);
+//     }
+//   } else {
+//     // 更改单元格样式
+//     data.setSelectedCellAttr(type, value);
+//     if (type === 'formula' && !data.selector.multiple()) {
+//       editorSet.call(this);
+//     }
+//     sheetReset.call(this);
+//   }
+// }
 
 function sortFilterChange(ci, order, operator, value) {
   // console.log('sort:', sortDesc, operator, value);
@@ -546,7 +546,7 @@ function sheetInitEvents() {
     editor,
     contextMenu,
     data,
-    toolbar,
+    // toolbar,
     modalValidation,
     sortFilter,
   } = this;
@@ -584,7 +584,7 @@ function sheetInitEvents() {
   });
 
   // toolbar change
-  toolbar.change = (type, value) => toolbarChange.call(this, type, value);
+  // toolbar.change = (type, value) => toolbarChange.call(this, type, value);
 
   // sort filter ok
   sortFilter.ok = (ci, order, o, v) => sortFilterChange.call(this, ci, order, o, v);
@@ -679,7 +679,7 @@ function sheetInitEvents() {
           break;
         case 85:
           // ctrl + u
-          toolbar.trigger('underline');
+          // toolbar.trigger('underline');
           evt.preventDefault();
           break;
         case 86:
@@ -714,11 +714,11 @@ function sheetInitEvents() {
           break;
         case 66:
           // ctrl + B
-          toolbar.trigger('bold');
+        //  toolbar.trigger('bold');
           break;
         case 73:
           // ctrl + I
-          toolbar.trigger('italic');
+          // toolbar.trigger('italic');
           break;
         default:
           break;
@@ -796,8 +796,8 @@ export default class Sheet {
   constructor(targetEl, data) {
     const { view, showToolbar, showContextmenu } = data.settings;
     this.el = h('div', `${cssPrefix}-sheet`);
-    this.toolbar = new Toolbar(data, view.width, !showToolbar);
-    targetEl.children(this.toolbar.el, this.el);
+    // this.toolbar = new Toolbar(data, view.width, !showToolbar);
+    targetEl.children(this.el);
     this.data = data;
     // table
     this.tableEl = h('canvas', `${cssPrefix}-table`);
