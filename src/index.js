@@ -109,7 +109,7 @@ class Seniortable {
   }
 
   // 获取当前选中的坐标数据
-  getSelectedCoords() {
+  getSelection() {
     return { ... this.data.selector.range };
   }
 

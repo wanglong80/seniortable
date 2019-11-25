@@ -138,6 +138,12 @@ npm run dev
 </tr>
 <tr>
     <td>
+      <div><b>getSelection()</b></div>
+    </td>
+    <td>获取当前选中的坐标数据</td>
+</tr>
+<tr>
+    <td>
       <div><b>insertRows(sri, n)</b></div>
       <div><sub>@param integer sri - 起始行</sub></div>
       <div><sub>@param integer n - 插入行数</sub></div>

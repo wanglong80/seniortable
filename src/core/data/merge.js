@@ -9,8 +9,8 @@ class Merges {
     this._.forEach(cb);
   }
 
-  deleteWithin(cr) {
-    this._ = this._.filter(it => !it.within(cr));
+  deleteWithin(cellRange) {
+    this._ = this._.filter(it => !it.within(cellRange));
   }
 
   getFirstIncludes(ri, ci) {
