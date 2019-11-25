@@ -86,22 +86,35 @@ npm run dev
 ## API 参考手册
 
 ### 公有方法
-方法 | 说明
--|-
-loadData(data) | 载入全部数据
-getData() | 获取全部数据  
-undo() | 撤销
-redo() | 重做
-render() | 渲染重绘表格
-getCell(ri, ci) | 获取单元格数据 |
-getSelectedCell() | 获取选中的单元格数据，多个单元格只取左上角的 |
-setCellText(ri, ci, text) | 设置单元格文本
-setCellAttr(ri, ci, property, value) | 设置单元格属性 `附录2`
-setSelectedCellAttr(property, value) | 设置选中的单元格属性 `附录2`
-mergeSelectedCells() | 合并选中的单元格
-unmergeSelectedCells() | 拆分选中的单元格
-formulaSelectedCell() | 选中的单元格计算公式
-freeze(ri, ci) | 冻结指定行和列，设置(0,0) 可以解除冻结
+<table>
+<tr>
+    <td>loadData(data)</td>
+    <td>载入全部数据</td>
+</tr>
+<tr>
+    <td>作    者：</td>
+    <td></td>
+</tr>
+</table> 
+
+方法 | 参数 | 说明
+-|-|-
+loadData(data) | @param json data: 数据 | 载入全部数据
+getData() | - | 获取全部数据  
+undo() | - | 撤销
+redo() | - | 重做
+render() | - | 渲染重绘表格
+getCell(ri, ci) | @param int ri: 行索引<br>@param int ci: 列索引 | 获取单元格数据 |
+getSelectedCell() | - | 获取选中的单元格数据，多个单元格只取左上角的 |
+deleteSelectedRows() | - | 删除选中的行 |
+deleteSelectedColumns() | - | 删除选中的列 |
+setCellText(ri, ci, text) | @param int ri: 行索引<br>@param int ci: 列索引<br>@param string text: 文本 | 设置单元格文本
+setCellAttr(ri, ci, property, value) | @param int ri: 行索引<br>@param int ci: 列索引<br>@param string property: 属性<br>@param string value: 值 | 设置单元格属性
+setSelectedCellAttr(property, value) | @param string property: 属性<br>@param string value: 值 | 设置选中的单元格属性
+mergeSelectedCells() | - | 合并选中的单元格
+unmergeSelectedCells() | - | 拆分选中的单元格
+formulaSelectedCell() | - | 选中的单元格计算公式
+freeze(ri, ci) | - | 冻结指定行和列，设置(0,0) 可以解除冻结
 
 #### 附录1. 参数含义对照表
 参数 | 含义

@@ -113,6 +113,18 @@ class Seniortable {
     return this.data.selector;
   }
 
+  // 向上插入n行
+  insertSelectedRows(n) {
+    this.data.insert('row', n);
+    return this;
+  }
+
+  // 当前选择列向右插入n列
+  insertSelectedColumns(n) {
+    this.data.insert('column', n);
+    return this;
+  }
+
   // 删除选择的行
   deleteSelectedRows() {
     this.data.delete('row');
