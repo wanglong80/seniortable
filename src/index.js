@@ -103,9 +103,26 @@ class Seniortable {
     return this.data.getCell(ri, ci);
   }
 
+  // 获取选中的单元格数据
+  getSelectedCell() {
+    return this.data.getSelectedCell();
+  }
+
   // 获取当前焦点单元格的选中器对象
   getSelector() {
     return this.data.selector;
+  }
+
+  // 删除选择的行
+  deleteSelectedRows() {
+    this.data.delete('row');
+    return this;
+  }
+
+  // 删除选择的列
+  deleteSelectedColumns() {
+    this.data.delete('column');
+    return this;
   }
 
   validate() {

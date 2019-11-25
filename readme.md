@@ -94,6 +94,7 @@ undo() | 撤销
 redo() | 重做
 render() | 渲染重绘表格
 getCell(ri, ci) | 获取单元格数据 |
+getSelectedCell() | 获取选中的单元格数据，多个单元格只取左上角的 |
 setCellText(ri, ci, text) | 设置单元格文本
 setCellAttr(ri, ci, property, value) | 设置单元格属性 `附录2`
 setSelectedCellAttr(property, value) | 设置选中的单元格属性 `附录2`
