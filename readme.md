@@ -88,12 +88,23 @@ npm run dev
 ### 公有方法
 <table>
 <tr>
-    <td>loadData(data)</td>
+    <td>方法</td>
+    <td>说明</td>
+</tr>
+<tr>
+    <td>
+      <b>loadData(data)</b>
+      <p><small>@param json data: 数据</small></p>
+    </td>
     <td>载入全部数据</td>
 </tr>
 <tr>
-    <td>作    者：</td>
-    <td></td>
+    <td>
+      <b>getCell(ri, ci)</b>
+      <p><small>@param int ri: 行索引</small></p>
+      <p><small>@param int ci: 列索引</small></p>
+    </td>
+    <td>载入全部数据</td>
 </tr>
 </table> 
 
