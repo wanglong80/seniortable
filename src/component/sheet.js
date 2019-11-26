@@ -240,33 +240,7 @@ function sheetReset() {
   horizontalScrollbarSet.call(this);
   sheetFreeze.call(this);
   table.render();
-  // toolbar.reset();
   selector.reset();
-}
-
-function clearClipboard() {
-  const { data, selector } = this;
-  data.clearClipboard();
-  selector.hideClipboard();
-}
-
-function copy() {
-  const { data, selector } = this;
-  data.copy();
-  selector.showClipboard();
-}
-
-function cut() {
-  const { data, selector } = this;
-  data.cut();
-  selector.showClipboard();
-}
-
-function paste(what) {
-  const { data } = this;
-  if (data.paste(what, msg => xtoast('Tip', msg))) {
-    sheetReset.call(this);
-  }
 }
 
 function autofilter() {
@@ -274,15 +248,6 @@ function autofilter() {
   data.autofilter();
   sheetReset.call(this);
 }
-
-// function toolbarChangePaintformatPaste() {
-//   const { toolbar } = this;
-//   if (toolbar.paintformatActive()) {
-//     paste.call(this, 'format');
-//     clearClipboard.call(this);
-//     toolbar.paintformatToggle();
-//   }
-// }
 
 function overlayerMousedown(evt) {
   // console.log(':::::overlayer.mousedown:', evt.detail, evt.button, evt.buttons, evt.shiftKey);
@@ -363,7 +328,6 @@ function editorSet() {
   editorSetOffset.call(this);
   selector.hide(); // 单元格编辑时，选中器隐藏
   editor.setCell(data.getSelectedCell(), data.getSelectedValidator());
-  clearClipboard.call(this);
 }
 
 // 纵向滚动事件
@@ -488,46 +452,8 @@ function insertDeleteRowColumn(type) {
       });
     });
   }
-  clearClipboard.call(this);
   sheetReset.call(this);
 }
-
-// function toolbarChange(type, value) {
-//   const { data } = this;
-//   if (type === 'undo') {
-//     this.undo();
-//   } else if (type === 'redo') {
-//     this.redo();
-//   } else if (type === 'print') {
-//     // print
-//   } else if (type === 'paintformat') {
-//     if (value === true) copy.call(this);
-//     else clearClipboard.call(this);
-//   } else if (type === 'clearformat') {
-//     insertDeleteRowColumn.call(this, 'delete-cell-format');
-//   } else if (type === 'link') {
-//     // link
-//   } else if (type === 'chart') {
-//     // chart
-//   } else if (type === 'autofilter') {
-//     // filter
-//     autofilter.call(this);
-//   } else if (type === 'freeze') {
-//     if (value) {
-//       const { ri, ci } = data.selector;
-//       this.freeze(ri, ci);
-//     } else {
-//       this.freeze(0, 0);
-//     }
-//   } else {
-//     // 更改单元格样式
-//     data.setSelectedCellAttr(type, value);
-//     if (type === 'formula' && !data.selector.multiple()) {
-//       editorSet.call(this);
-//     }
-//     sheetReset.call(this);
-//   }
-// }
 
 function sortFilterChange(ci, order, operator, value) {
   // console.log('sort:', sortDesc, operator, value);
@@ -740,7 +666,6 @@ function sheetInitEvents() {
           break;
         case 27: // esc
           // contextMenu.hide();
-          clearClipboard.call(this);
           break;
         case 37: // left
           selectorMove.call(this, shiftKey, 'left');

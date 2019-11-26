@@ -1,5 +1,4 @@
 import { stringAt } from '../core/alphabet';
-import { getFontSizePxByPt } from '../core/font';
 import _cell from '../core/cell';
 import { formulam } from '../core/formula';
 import { formatm } from '../core/format';
@@ -75,7 +74,7 @@ function renderCell(rindex, cindex) {
       cellText = formatm[style.format].render(cellText);
     }
     const font = Object.assign({}, style.font);
-    font.size = getFontSizePxByPt(font.size);
+
     // console.log('style:', style);
     draw.text(cellText, dbox, {
       align: style.align,

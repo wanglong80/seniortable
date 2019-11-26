@@ -1,73 +1,17 @@
 /* global document */
 
-import Selector from './selector';
-import Scroll from './scroll';
+import Selector from './Selector';
+import Scroll from './Scroll';
 import History from './data/history';
-import Clipboard from './clipboard';
 import AutoFilter from './data/auto_filter';
 import { Merges } from './data/merge';
 import helper from './helper';
 import { Rows } from './data/row';
 import { Cols } from './data/col';
 import { Validations } from './data/validation';
-import { CellRange } from './cell_range';
+import Range from './Range';
 import { expr2xy, xy2expr } from './alphabet';
-import { t } from '../locale/locale';
 
-// private methods
-/*
- * {
- *  name: ''
- *  freeze: [0, 0],
- *  formats: [],
- *  styles: [
- *    {
- *      bgcolor: '',
- *      align: '',
- *      valign: '',
- *      textwrap: false,
- *      strike: false,
- *      underline: false,
- *      color: '',
- *      format: 1,
- *      border: {
- *        left: [style, color],
- *        right: [style, color],
- *        top: [style, color],
- *        bottom: [style, color],
- *      },
- *      font: {
- *        name: 'Helvetica',
- *        size: 10,
- *        bold: false,
- *        italic: false,
- *      }
- *    }
- *  ],
- *  merges: [
- *    'A1:F11',
- *    ...
- *  ],
- *  rows: {
- *    1: {
- *      height: 50,
- *      style: 1,
- *      cells: {
- *        1: {
- *          style: 2,
- *          type: 'string',
- *          text: '',
- *          value: '', // cal result
- *        }
- *      }
- *    },
- *    ...
- *  },
- *  cols: {
- *    2: { width: 100, style: 1 }
- *  }
- * }
- */
 const defaultSettings = {
   view: {
     height: () => document.documentElement.clientHeight,
@@ -120,7 +64,6 @@ function canPaste(src, dst, error = () => { }) {
     cellRange.eci = dst.sci + scn - 1;
   }
   if (merges.intersects(cellRange)) {
-    error(t('error.pasteForMergedCell'));
     return false;
   }
   return true;
@@ -137,18 +80,9 @@ function copyPaste(srcCellRange, dstCellRange, what, autofill = false) {
       // console.log('cell:', ri, ci, cell);
       const [rn, cn] = cell.merge;
       if (rn <= 0 && cn <= 0) return;
-      merges.add(new CellRange(ri, ci, ri + rn, ci + cn));
+      merges.add(new Range(ri, ci, ri + rn, ci + cn));
     }
   });
-}
-
-function cutPaste(srcCellRange, dstCellRange) {
-  const { clipboard, rows, merges } = this;
-  rows.cutPaste(srcCellRange, dstCellRange);
-  merges.move(srcCellRange,
-    dstCellRange.sri - srcCellRange.sri,
-    dstCellRange.sci - srcCellRange.sci);
-  clipboard.clear();
 }
 
 // bss: { top, bottom, left, right }
@@ -338,7 +272,6 @@ export default class Data {
     this.selector = new Selector();
     this.scroll = new Scroll();
     this.history = new History();
-    this.clipboard = new Clipboard();
     this.autoFilter = new AutoFilter();
     this.change = () => { };
     this.exceptRowSet = new Set();
@@ -398,41 +331,19 @@ export default class Data {
   }
 
   copy() {
-    this.clipboard.copy(this.selector.range);
   }
 
   cut() {
-    this.clipboard.cut(this.selector.range);
   }
 
-  // what: all | text | format
-  paste(what = 'all', error = () => { }) {
-    // console.log('sIndexes:', sIndexes);
-    const { clipboard, selector } = this;
-    if (clipboard.isClear()) return false;
-    if (!canPaste.call(this, clipboard.range, selector.range, error)) return false;
 
-    this.changeData(() => {
-      if (clipboard.isCopy()) {
-        copyPaste.call(this, clipboard.range, selector.range, what);
-      } else if (clipboard.isCut()) {
-        cutPaste.call(this, clipboard.range, selector.range);
-      }
-    });
-    return true;
-  }
-
-  autofill(cellRange, what, error = () => { }) {
+  autofill(range, what, error = () => { }) {
     const srcRange = this.selector.range;
-    if (!canPaste.call(this, srcRange, cellRange, error)) return false;
+    if (!canPaste.call(this, srcRange, range, error)) return false;
     this.changeData(() => {
-      copyPaste.call(this, srcRange, cellRange, what, true);
+      copyPaste.call(this, srcRange, range, what, true);
     });
     return true;
-  }
-
-  clearClipboard() {
-    this.clipboard.clear();
   }
 
   calSelectedRangeByEnd(ri, ci) {
@@ -451,7 +362,7 @@ export default class Data {
     else [sri, eri] = [nri, cri];
     if (nci > cci) [sci, eci] = [cci, nci];
     else [sci, eci] = [nci, cci];
-    selector.range = merges.union(new CellRange(
+    selector.range = merges.union(new Range(
       sri, sci, eri, eci,
     ));
     selector.range = merges.union(selector.range);
@@ -466,7 +377,7 @@ export default class Data {
     let cellRange = merges.getFirstIncludes(ri, ci);
     // console.log('cellRange:', cellRange, ri, ci, merges);
     if (cellRange === null) {
-      cellRange = new CellRange(ri, ci, ri, ci);
+      cellRange = new Range(ri, ci, ri, ci);
       if (ri === -1) {
         cellRange.sri = 0;
         cellRange.eri = rows.len - 1;
@@ -618,14 +529,6 @@ export default class Data {
 
   getSelectedRect() {
     return this.getRect(this.selector.range);
-  }
-
-  getClipboardRect() {
-    const { clipboard } = this;
-    if (!clipboard.isClear()) {
-      return this.getRect(clipboard.range);
-    }
-    return { left: -100, top: -100 };
   }
 
   getRect(cellRange) {
@@ -880,7 +783,7 @@ export default class Data {
   }
 
   delete(type, si, ei) {
-    const range = new CellRange(si, si, ei, ei);
+    const range = new Range(si, si, ei, ei);
     this.changeData(() => {
       const {
         rows, merges, cols,
@@ -1065,7 +968,7 @@ export default class Data {
 
   freezeViewRange() {
     const [ri, ci] = this.freeze;
-    return new CellRange(0, 0, ri - 1, ci - 1, this.freezeTotalWidth(), this.freezeTotalHeight());
+    return new Range(0, 0, ri - 1, ci - 1, this.freezeTotalWidth(), this.freezeTotalHeight());
   }
 
   exceptRowTotalHeight(sri, eri) {
@@ -1104,7 +1007,7 @@ export default class Data {
       if (x > this.viewWidth()) break;
     }
     // console.log(ri, ci, eri, eci, x, y);
-    return new CellRange(ri, ci, eri, eci, x, y);
+    return new Range(ri, ci, eri, eci, x, y);
   }
 
   eachMergesInView(viewRange, cb) {

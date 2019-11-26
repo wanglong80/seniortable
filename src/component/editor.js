@@ -3,7 +3,6 @@ import { h } from './element';
 import Suggest from './suggest';
 import Datepicker from './datepicker';
 import { cssPrefix } from '../config';
-// import { mouseMoveUp } from '../event';
 
 function resetTextareaSize() {
   if (!/^\s*$/.test(this.inputText)) {
@@ -222,7 +221,6 @@ export default class Editor {
   }
 
   setCell(cell, validator) {
-    // console.log('::', validator);
     const { el, datepicker, suggest } = this;
     el.show();
     this.cell = cell;
@@ -247,7 +245,6 @@ export default class Editor {
 
   setText(text) {
     this.inputText = text;
-    // console.log('text>>:', text);
     setText.call(this, text, text.length);
     resetTextareaSize.call(this);
   }
