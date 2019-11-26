@@ -110,7 +110,7 @@ class Seniortable {
 
   // 获取当前选中的坐标数据
   getSelection() {
-    return { ... this.data.selector.range };
+    return { ...this.data.selector.range };
   }
 
   // 向上插入n行
@@ -155,8 +155,9 @@ class Seniortable {
     return this;
   }
 
-  static locale(lang, message) {
-    locale(lang, message);
+  onKeyDown(cb) {
+    this.sheet.customEvents.keyDown = cb;
+    return this;
   }
 }
 

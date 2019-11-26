@@ -12,12 +12,14 @@
   <div style="margin: 10px">
     <button onclick="window.console.log(ST.getData())">获取数据</button>
     <button onclick="window.console.log(ST.getSelectedCoords())">获取当前坐标</button>
-    <button onclick="window.console.log(ST.getSelectedCell())">获取选中的单元格</button>
+    <button onclick="
+    var c = ST.getSelection();
+    window.console.log(ST.getCell(c.sri, c.sci))">获取选中的单元格</button>
     <button onclick="
     var c = ST.getSelection();
     ST.insertRows(c.sri, 1).render()">向上插入1行</button>
     <button onclick="
-     var c = ST.getSelection();
+    var c = ST.getSelection();
     ST.insertColumns(c.sci, 1).render()">向左插入1列</button>
     <button onclick="ST.deleteRows(1, 3).render()">删除行</button>
     <button onclick="ST.deleteColumns(1, 3).render()">删除列</button>
@@ -75,6 +77,8 @@
           // },
         }).onChange((data) => {
           console.log('触发 onChange 事件', data);
+        }).onKeyDown(evt => {
+          console.log('表格存在焦点时触发键盘事件', evt);
         });
     }
   </script>

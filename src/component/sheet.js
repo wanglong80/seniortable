@@ -5,9 +5,8 @@ import Resizer from './resizer';
 import Scrollbar from './scrollbar';
 import Selector from './selector';
 import Editor from './editor';
-import ContextMenu from './contextmenu';
+// import ContextMenu from './contextmenu';
 import Table from './table';
-// import Toolbar from './toolbar/index';
 import ModalValidation from './modal_validation';
 import SortFilter from './sort_filter';
 import { xtoast } from './message';
@@ -46,7 +45,7 @@ function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
   if (ri === -1 && ci === -1) return;
   // console.log(multiple, ', ri:', ri, ', ci:', ci);
   const {
-    table, selector, toolbar,
+    table, selector,
   } = this;
 
   if (multiple) {
@@ -54,7 +53,7 @@ function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
   } else {
     selector.set(ri, ci, indexesUpdated);
   }
-  // toolbar.reset();
+
   table.render();
 }
 
@@ -544,7 +543,7 @@ function sheetInitEvents() {
     verticalScrollbar,
     horizontalScrollbar,
     editor,
-    contextMenu,
+    // contextMenu,
     data,
     // toolbar,
     modalValidation,
@@ -559,12 +558,12 @@ function sheetInitEvents() {
       // the left mouse button: mousedown → mouseup → click
       // the right mouse button: mousedown → contenxtmenu → mouseup
       if (evt.buttons === 2) {
-        if (data.xyInSelectedRect(evt.offsetX, evt.offsetY)) {
-          contextMenu.setPosition(evt.offsetX, evt.offsetY);
-          evt.stopPropagation();
-        } else {
-          contextMenu.hide();
-        }
+        // if (data.xyInSelectedRect(evt.offsetX, evt.offsetY)) {
+        //   contextMenu.setPosition(evt.offsetX, evt.offsetY);
+        //   evt.stopPropagation();
+        // } else {
+        //   contextMenu.hide();
+        // }
       } else if (evt.detail === 2) { // 鼠标双击事件
         editorSet.call(this);
       } else {
@@ -616,24 +615,24 @@ function sheetInitEvents() {
     }
   };
   // contextmenu
-  contextMenu.itemClick = (type) => {
-    // console.log('type:', type);
-    if (type === 'validation') {
-      modalValidation.setValue(data.getSelectedValidation());
-    } else if (type === 'copy') {
-      copy.call(this);
-    } else if (type === 'cut') {
-      cut.call(this);
-    } else if (type === 'paste') {
-      paste.call(this, 'all');
-    } else if (type === 'paste-value') {
-      paste.call(this, 'text');
-    } else if (type === 'paste-format') {
-      paste.call(this, 'format');
-    } else {
-      insertDeleteRowColumn.call(this, type);
-    }
-  };
+  // contextMenu.itemClick = (type) => {
+  //   // console.log('type:', type);
+  //   if (type === 'validation') {
+  //     modalValidation.setValue(data.getSelectedValidation());
+  //   } else if (type === 'copy') {
+  //     copy.call(this);
+  //   } else if (type === 'cut') {
+  //     cut.call(this);
+  //   } else if (type === 'paste') {
+  //     paste.call(this, 'all');
+  //   } else if (type === 'paste-value') {
+  //     paste.call(this, 'text');
+  //   } else if (type === 'paste-format') {
+  //     paste.call(this, 'format');
+  //   } else {
+  //     insertDeleteRowColumn.call(this, type);
+  //   }
+  // };
 
   bind(window, 'resize', () => {
     this.reload();
@@ -643,6 +642,7 @@ function sheetInitEvents() {
     this.focusing = overlayerEl.contains(evt.target);
   });
 
+  // 焦点时监听键盘事件
   // for selector
   bind(window, 'keydown', (evt) => {
     if (!this.focusing) return;
@@ -650,6 +650,12 @@ function sheetInitEvents() {
     const {
       key, ctrlKey, shiftKey, altKey, metaKey,
     } = evt;
+
+    // 用户自定义监听事件
+    if (typeof this.customEvents.keyDown === 'function') {
+      this.customEvents.keyDown(evt);
+    }
+
     // console.log('keydown.evt: ', keyCode);
     if (ctrlKey || metaKey) {
       // const { sIndexes, eIndexes } = selector;
@@ -733,7 +739,7 @@ function sheetInitEvents() {
           }
           break;
         case 27: // esc
-          contextMenu.hide();
+          // contextMenu.hide();
           clearClipboard.call(this);
           break;
         case 37: // left
@@ -794,9 +800,7 @@ function sheetInitEvents() {
 
 export default class Sheet {
   constructor(targetEl, data) {
-    const { showContextmenu } = data.settings;
     this.el = h('div', `${cssPrefix}-sheet`);
-    // this.toolbar = new Toolbar(data, view.width, !showToolbar);
     targetEl.children(this.el);
     this.data = data;
     // table
@@ -807,6 +811,8 @@ export default class Sheet {
     // 实例化滚动条
     this.verticalScrollbar = new Scrollbar(true);
     this.horizontalScrollbar = new Scrollbar(false);
+    // event
+    this.customEvents = {};
     // editor
     this.editor = new Editor(
       formulas,
@@ -815,8 +821,6 @@ export default class Sheet {
     );
     // data validation
     this.modalValidation = new ModalValidation();
-    // contextMenu
-    this.contextMenu = new ContextMenu(() => this.getTableOffset(), !showContextmenu);
     // selector
     this.selector = new Selector(data);
     this.overlayerCEl = h('div', `${cssPrefix}-overlayer-content`)
@@ -836,7 +840,7 @@ export default class Sheet {
       this.colResizer.el,
       this.verticalScrollbar.el,
       this.horizontalScrollbar.el,
-      this.contextMenu.el,
+      // this.contextMenu.el,
       this.modalValidation.el,
       this.sortFilter.el,
     );
