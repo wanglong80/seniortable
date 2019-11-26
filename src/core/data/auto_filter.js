@@ -1,4 +1,4 @@
-import { Range } from '../cell_range';
+import Range from '../Range';
 // operator: all|eq|neq|gt|gte|lt|lte|in|be
 // value:
 //   in => []

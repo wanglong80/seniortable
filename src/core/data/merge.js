@@ -1,4 +1,4 @@
-import { Range } from '../cell_range';
+import Range from '../Range';
 
 class Merges {
   constructor(d = []) {
