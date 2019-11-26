@@ -40,7 +40,7 @@ const defaultSettings = {
     color: '#000',
     font: {
       name: 'Arial',
-      size: 9,
+      size: 12,
       bold: false,
       italic: false,
     },

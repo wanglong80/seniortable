@@ -8,9 +8,9 @@ export default class Plugin {
       let text = e.clipboardData.getData('text');
       text = encodeURIComponent(text);
 
-      const axis = this.getSelector();
-      const sri = axis.ri;
-      const sci = axis.ci;
+      const axis = this.getSelection();
+      const { sri } = axis;
+      const { sci } = axis;
 
       // 得到粘贴板内容的数组
       const rowsArray1 = text.split('%0D%0A');
