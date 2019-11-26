@@ -1,4 +1,4 @@
-import { CellRange } from '../cell_range';
+import { Range } from '../cell_range';
 
 class Merges {
   constructor(d = []) {
@@ -9,8 +9,8 @@ class Merges {
     this._.forEach(cb);
   }
 
-  deleteWithin(cellRange) {
-    this._ = this._.filter(it => !it.within(cellRange));
+  deleteWithin(range) {
+    this._ = this._.filter(it => !it.within(range));
   }
 
   getFirstIncludes(ri, ci) {
@@ -23,14 +23,14 @@ class Merges {
     return null;
   }
 
-  filterIntersects(cellRange) {
-    return new Merges(this._.filter(it => it.intersects(cellRange)));
+  filterIntersects(range) {
+    return new Merges(this._.filter(it => it.intersects(range)));
   }
 
-  intersects(cellRange) {
+  intersects(range) {
     for (let i = 0; i < this._.length; i += 1) {
       const it = this._[i];
-      if (it.intersects(cellRange)) {
+      if (it.intersects(range)) {
         // console.log('intersects');
         return true;
       }
@@ -38,8 +38,8 @@ class Merges {
     return false;
   }
 
-  union(cellRange) {
-    let cr = cellRange;
+  union(range) {
+    let cr = range;
     this._.forEach((it) => {
       if (it.intersects(cr)) {
         cr = it.union(cr);
@@ -55,11 +55,11 @@ class Merges {
 
   // type: row | column
   shift(type, index, n, cbWithin) {
-    this._.forEach((cellRange) => {
+    this._.forEach((range) => {
       const {
         sri, sci, eri, eci,
-      } = cellRange;
-      const range = cellRange;
+      } = range;
+
       if (type === 'row') {
         if (sri >= index) {
           range.sri += n;
@@ -80,10 +80,10 @@ class Merges {
     });
   }
 
-  move(cellRange, rn, cn) {
+  move(range, rn, cn) {
     this._.forEach((it1) => {
       const it = it1;
-      if (it.within(cellRange)) {
+      if (it.within(range)) {
         it.eri += rn;
         it.sri += rn;
         it.sci += cn;
@@ -93,7 +93,7 @@ class Merges {
   }
 
   setData(merges) {
-    this._ = merges.map(merge => CellRange.valueOf(merge));
+    this._ = merges.map(merge => Range.valueOf(merge));
     return this;
   }
 

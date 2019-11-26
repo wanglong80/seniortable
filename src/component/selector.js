@@ -204,8 +204,8 @@ export default class Selector {
 
   set(ri, ci, indexesUpdated = true) {
     const { data } = this;
-    const cellRange = data.calSelectedRangeByStart(ri, ci);
-    const { sri, sci } = cellRange;
+    const range = data.calSelectedRangeByStart(ri, ci);
+    const { sri, sci } = range;
     if (indexesUpdated) {
       let [cri, cci] = [ri, ci];
       if (ri < 0) cri = 0;
@@ -215,7 +215,7 @@ export default class Selector {
     }
 
     this.moveIndexes = [sri, sci];
-    this.range = cellRange;
+    this.range = range;
     this.resetAreaOffset();
     this.el.show();
   }

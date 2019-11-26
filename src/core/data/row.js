@@ -88,16 +88,16 @@ class Rows {
   }
 
   // what: all | format | text
-  copyPaste(srcCellRange, dstCellRange, what, autofill = false, cb = () => {}) {
+  copyPaste(srcRange, dstRange, what, autofill = false, cb = () => {}) {
     const {
       sri, sci, eri, eci,
-    } = srcCellRange;
-    const dsri = dstCellRange.sri;
-    const dsci = dstCellRange.sci;
-    const deri = dstCellRange.eri;
-    const deci = dstCellRange.eci;
-    const [rn, cn] = srcCellRange.size();
-    const [drn, dcn] = dstCellRange.size();
+    } = srcRange;
+    const dsri = dstRange.sri;
+    const dsci = dstRange.sci;
+    const deri = dstRange.eri;
+    const deci = dstRange.eci;
+    const [rn, cn] = srcRange.size();
+    const [drn, dcn] = dstRange.size();
     // console.log(srcIndexes, dstIndexes);
     let isAdd = true;
     let dn = 0;
@@ -155,15 +155,15 @@ class Rows {
     }
   }
 
-  cutPaste(srcCellRange, dstCellRange) {
+  cutPaste(srcRange, dstRange) {
     const ncellmm = {};
     this.each((ri) => {
       this.eachCells(ri, (ci) => {
         let nri = parseInt(ri, 10);
         let nci = parseInt(ci, 10);
-        if (srcCellRange.includes(ri, ci)) {
-          nri = dstCellRange.sri + (nri - srcCellRange.sri);
-          nci = dstCellRange.sci + (nci - srcCellRange.sci);
+        if (srcRange.includes(ri, ci)) {
+          nri = dstRange.sri + (nri - srcRange.sri);
+          nci = dstRange.sci + (nci - srcRange.sci);
         }
         ncellmm[nri] = ncellmm[nri] || { cells: {} };
         ncellmm[nri].cells[nci] = this._[ri].cells[ci];
@@ -231,8 +231,8 @@ class Rows {
   }
 
   // what: all | text | format | merge
-  deleteCells(cellRange, what = 'all') {
-    cellRange.each((i, j) => {
+  deleteCells(range, what = 'all') {
+    range.each((i, j) => {
       this.deleteCell(i, j, what);
     });
   }

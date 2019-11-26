@@ -1,5 +1,5 @@
 import Validator from '../validator';
-import { CellRange } from '../cell_range';
+import { Range } from '../cell_range';
 
 class Validation {
   constructor(mode, refs, validator) {
@@ -11,23 +11,23 @@ class Validation {
   includes(ri, ci) {
     const { refs } = this;
     for (let i = 0; i < refs.length; i += 1) {
-      const cr = CellRange.valueOf(refs[i]);
+      const cr = Range.valueOf(refs[i]);
       if (cr.includes(ri, ci)) return true;
     }
     return false;
   }
 
   addRef(ref) {
-    this.remove(CellRange.valueOf(ref));
+    this.remove(Range.valueOf(ref));
     this.refs.push(ref);
   }
 
-  remove(cellRange) {
+  remove(range) {
     const nrefs = [];
     this.refs.forEach((it) => {
-      const cr = CellRange.valueOf(it);
-      if (cr.intersects(cellRange)) {
-        const crs = cr.difference(cellRange);
+      const cr = Range.valueOf(it);
+      if (cr.intersects(range)) {
+        const crs = cr.difference(range);
         crs.forEach(it1 => nrefs.push(it1.toString()));
       } else {
         nrefs.push(it);
@@ -114,9 +114,9 @@ class Validations {
     return null;
   }
 
-  remove(cellRange) {
+  remove(range) {
     this.each((it) => {
-      it.remove(cellRange);
+      it.remove(range);
     });
   }
 

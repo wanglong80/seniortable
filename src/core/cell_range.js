@@ -1,7 +1,7 @@
 import { xy2expr, expr2xy } from './alphabet';
 
 // 单元格区域类
-class CellRange {
+class Range {
   constructor(sri, sci, eri, eci, w = 0, h = 0) {
     this.sri = sri;
     this.sci = sci;
@@ -86,7 +86,7 @@ class CellRange {
     const {
       sri, sci, eri, eci,
     } = this;
-    return new CellRange(
+    return new Range(
       other.sri < sri ? other.sri : sri,
       other.sci < sci ? other.sci : sci,
       other.eri > eri ? other.eri : eri,
@@ -97,12 +97,12 @@ class CellRange {
   // intersection
   // intersection(other) {}
 
-  // Returns Array<CellRange> that represents that part of this that does not intersect with other
+  // Returns Array<Range> that represents that part of this that does not intersect with other
   // difference
   difference(other) {
     const ret = [];
     const addRet = (sri, sci, eri, eci) => {
-      ret.push(new CellRange(sri, sci, eri, eci));
+      ret.push(new Range(sri, sci, eri, eci));
     };
     const {
       sri, sci, eri, eci,
@@ -190,7 +190,7 @@ class CellRange {
     const {
       sri, sci, eri, eci, w, h,
     } = this;
-    return new CellRange(sri, sci, eri, eci, w, h);
+    return new Range(sri, sci, eri, eci, w, h);
   }
 
   /*
@@ -214,12 +214,12 @@ class CellRange {
     if (refs.length > 1) {
       [eci, eri] = expr2xy(refs[1]);
     }
-    return new CellRange(sri, sci, eri, eci);
+    return new Range(sri, sci, eri, eci);
   }
 }
 
-export default CellRange;
+export default Range;
 
 export {
-  CellRange,
+  Range,
 };

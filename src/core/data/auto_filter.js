@@ -1,4 +1,4 @@
-import { CellRange } from '../cell_range';
+import { Range } from '../cell_range';
 // operator: all|eq|neq|gt|gte|lt|lte|in|be
 // value:
 //   in => []
@@ -162,7 +162,7 @@ export default class AutoFilter {
   }
 
   range() {
-    return CellRange.valueOf(this.ref);
+    return Range.valueOf(this.ref);
   }
 
   hrange() {

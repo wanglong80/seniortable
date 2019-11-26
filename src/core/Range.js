@@ -96,7 +96,7 @@ export default class Range {
   // intersection
   // intersection(other) {}
 
-  // Returns Array<CellRange> that represents that part of this that does not intersect with other
+  // Returns Array<Range> that represents that part of this that does not intersect with other
   // difference
   difference(other) {
     const ret = [];

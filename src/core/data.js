@@ -50,32 +50,32 @@ const defaultSettings = {
 const toolbarHeight = 41;
 
 
-// src: cellRange
-// dst: cellRange
+// src: range
+// dst: range
 function canPaste(src, dst, error = () => { }) {
   const { merges } = this;
-  const cellRange = dst.clone();
+  const range = dst.clone();
   const [srn, scn] = src.size();
   const [drn, dcn] = dst.size();
   if (srn > drn) {
-    cellRange.eri = dst.sri + srn - 1;
+    range.eri = dst.sri + srn - 1;
   }
   if (scn > dcn) {
-    cellRange.eci = dst.sci + scn - 1;
+    range.eci = dst.sci + scn - 1;
   }
-  if (merges.intersects(cellRange)) {
+  if (merges.intersects(range)) {
     return false;
   }
   return true;
 }
-function copyPaste(srcCellRange, dstCellRange, what, autofill = false) {
+function copyPaste(srcRange, dstRange, what, autofill = false) {
   const { rows, merges } = this;
   // delete dest merge
   if (what === 'all' || what === 'format') {
-    rows.deleteCells(dstCellRange, what);
-    merges.deleteWithin(dstCellRange);
+    rows.deleteCells(dstRange, what);
+    merges.deleteWithin(dstRange);
   }
-  rows.copyPaste(srcCellRange, dstCellRange, what, autofill, (ri, ci, cell) => {
+  rows.copyPaste(srcRange, dstRange, what, autofill, (ri, ci, cell) => {
     if (cell && cell.merge) {
       // console.log('cell:', ri, ci, cell);
       const [rn, cn] = cell.merge;
@@ -260,7 +260,7 @@ export default class Data {
     this.name = name || 'sheet';
     this.freeze = [0, 0];
     this.styles = []; // Array<Style>
-    this.merges = new Merges(); // [CellRange, ...]
+    this.merges = new Merges(); // [Range, ...]
     this.rows = new Rows(this.settings.row);
     this.cols = new Cols(this.settings.col);
     this.validations = new Validations();
@@ -374,21 +374,21 @@ export default class Data {
     const {
       selector, rows, cols, merges,
     } = this;
-    let cellRange = merges.getFirstIncludes(ri, ci);
-    // console.log('cellRange:', cellRange, ri, ci, merges);
-    if (cellRange === null) {
-      cellRange = new Range(ri, ci, ri, ci);
+    let range = merges.getFirstIncludes(ri, ci);
+    // console.log('range:', range, ri, ci, merges);
+    if (range === null) {
+      range = new Range(ri, ci, ri, ci);
       if (ri === -1) {
-        cellRange.sri = 0;
-        cellRange.eri = rows.len - 1;
+        range.sri = 0;
+        range.eri = rows.len - 1;
       }
       if (ci === -1) {
-        cellRange.sci = 0;
-        cellRange.eci = cols.len - 1;
+        range.sci = 0;
+        range.eci = cols.len - 1;
       }
     }
-    selector.range = cellRange;
-    return cellRange;
+    selector.range = range;
+    return range;
   }
 
   // 设置单元格属性
@@ -531,13 +531,13 @@ export default class Data {
     return this.getRect(this.selector.range);
   }
 
-  getRect(cellRange) {
+  getRect(range) {
     const {
       scroll, rows, cols, exceptRowSet,
     } = this;
     const {
       sri, sci, eri, eci,
-    } = cellRange;
+    } = range;
     // console.log('sri:', sri, ',sci:', sci, ', eri:', eri, ', eci:', eci);
     // no selector
     if (sri < 0 && sci < 0) {
