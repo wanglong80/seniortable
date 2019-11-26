@@ -1,4 +1,4 @@
-@css-prefix: x-spreadsheet;
+@css-prefix: seniortable;
 // color
 @red-color: #DB2828;
 @red-hover-color: #d01919;
@@ -178,11 +178,6 @@ body {
 
   .@{css-prefix}-border-palette-right {
     padding-left: 6px;
-
-    .@{css-prefix}-toolbar-btn {
-      margin-top: 0;
-      margin-bottom: 3px;
-    }
 
     .@{css-prefix}-line-type {
       position: relative;
@@ -430,8 +425,8 @@ body {
   }
 }
 
-.x-spreadsheet-item,
-.x-spreadsheet-header,
+.seniortable-item,
+.seniortable-header,
 {
 
   &.state {
@@ -535,64 +530,13 @@ body {
   }
 }
 
-.@{css-prefix}-toolbar, .@{css-prefix}-bottombar {
-  height: 40px;
-  padding: 0 30px;
-  text-align: left;
-  background: #f5f6f7;
-  display: flex;
-}
+
 
 .@{css-prefix}-bottombar {
   border-top: 1px solid #e0e2e4;
 }
 
-.@{css-prefix}-toolbar {
-  border-bottom: 1px solid #e0e2e4;
 
-  .@{css-prefix}-toolbar-btns {
-    display: inline-flex;
-  }
-
-  .@{css-prefix}-toolbar-more {
-    padding: 0 6px 6px;
-    text-align: left;
-    .@{css-prefix}-toolbar-divider {
-      margin-top: 0;
-    }
-  }
-
-  .@{css-prefix}-toolbar-btn {
-    flex: 0 0 auto;
-    display: inline-block;
-    border: 1px solid transparent;
-    height: 26px;
-    line-height: 26px;
-    min-width: 26px;
-    margin: 6px 1px 0;
-    padding: 0;
-    text-align: center;
-    border-radius: 2px;
-
-    &.disabled {
-      pointer-events: none;
-      opacity: 0.5;
-    }
-
-    &:hover, &.active {
-      background: rgba(0, 0, 0, .08);
-    }
-  }
-}
-
-.@{css-prefix}-toolbar-divider {
-  display: inline-block;
-  border-right: 1px solid #e0e2e4;
-  width: 0;
-  vertical-align: middle;
-  height: 18px;
-  margin: 12px 3px 0;
-}
 
 .@{css-prefix}-calendar {
   color: rgba(0,0,0,.65);
@@ -877,12 +821,6 @@ body {
 .@{css-prefix}-toast-header,
 .@{css-prefix}-toast-content {
   padding: .75em 1em;
-}
-
-@media screen and (min-width: 320px) and (max-width: 480px) {
-  .@{css-prefix}-toolbar {
-    display: none;
-  }
 }
 
 .@{css-prefix}-icon {

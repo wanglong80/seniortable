@@ -2,7 +2,7 @@
 
 import Selector from './selector';
 import Scroll from './scroll';
-import History from './history';
+import History from './data/history';
 import Clipboard from './clipboard';
 import AutoFilter from './data/auto_filter';
 import { Merges } from './data/merge';
@@ -319,7 +319,7 @@ function getCellColByX(x, scrollOffsetx) {
   return { ci: ci - 1, left, width };
 }
 
-export default class DataProxy {
+export default class Data {
   constructor(name, settings) {
     this.settings = helper.merge(defaultSettings, settings || {});
     // save data begin
@@ -448,9 +448,9 @@ export default class DataProxy {
     if (ri < 0) nri = rows.len - 1;
     if (ci < 0) nci = cols.len - 1;
     if (nri > cri) [sri, eri] = [cri, nri];
-    else[sri, eri] = [nri, cri];
+    else [sri, eri] = [nri, cri];
     if (nci > cci) [sci, eci] = [cci, nci];
-    else[sci, eci] = [nci, cci];
+    else [sci, eci] = [nci, cci];
     selector.range = merges.union(new CellRange(
       sri, sci, eri, eci,
     ));

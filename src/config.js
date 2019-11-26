@@ -1,7 +1,4 @@
-/* global window */
-export const cssPrefix = 'x-spreadsheet';
-export const dpr = window.devicePixelRatio || 1;
+export const cssPrefix = 'seniortable';
 export default {
   cssPrefix,
-  dpr,
 };

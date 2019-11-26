@@ -1,29 +1,21 @@
 /* global window, document */
 import { h } from './component/element';
-import DataProxy from './core/data_proxy';
 import Sheet from './component/sheet';
+import Data from './core/data';
 import { cssPrefix } from './config';
 import Paste from './plugins/paste';
 import './index.less';
 
 class Seniortable {
-  constructor(selectors, options = {}) {
-    let targetEl = selectors;
-
-    if (typeof selectors === 'string') {
-      targetEl = document.querySelector(selectors);
-    }
-
-    const rootEl = h('div', `${cssPrefix}`)
-      .on('contextmenu', evt => evt.preventDefault());
-    // create canvas element
+  constructor(targetEl, options = {}) {
+    const rootEl = h('div', `${cssPrefix}`).on('contextmenu', evt => evt.preventDefault());
     targetEl.appendChild(rootEl.el);
 
     // 数据对象
-    this.data = new DataProxy('sheet1', options);
-    // sheet 对象
+    this.data = new Data('sheet1', options);
+    // 工作表
     this.sheet = new Sheet(rootEl, this.data);
-    // 表格对象
+    // 表格
     this.table = this.sheet.table;
 
     // 默认安装所有内置插件

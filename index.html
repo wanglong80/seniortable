@@ -37,7 +37,7 @@
   <div id="seniortable"></div>
   <script>
     function load() {
-      window.ST = seniortable('#seniortable', { showToolbar: true, showGrid: true })
+      window.ST = seniortable(document.querySelector('#seniortable'), { showToolbar: true, showGrid: true })
         .loadData({
           styles: [
             {

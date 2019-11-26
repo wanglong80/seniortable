@@ -4,17 +4,11 @@
 
 > 本项目不提供工具栏界面，开发者需根据自己的场景结合 API 创造属于自己的电子表格应用。
 
-![GitHub](https://img.shields.io/github/license/myliang/x-spreadsheet.svg)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/myliang/x-spreadsheet.svg)
-[![Join the chat at https://gitter.im/x-datav/spreadsheet](https://badges.gitter.im/x-datav/spreadsheet.svg)](https://gitter.im/x-datav/spreadsheet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-
 ## 特性
   - Canvas 高性能渲染
   - 丰富的公有 API
   - 灵活的插件扩展机制
   - 兼容 Excel 功能
-
 
 ## 安装
 
@@ -23,13 +17,13 @@ npm install seniortable
 ```
 
 ```html
-<div id="seniortable-demo"></div>
+<div id="seniortable"></div>
 ```
 
 ```javascript
 import Seniortable from "seniortable";
 
-const ST = new Spreadsheet("#seniortable-demo");
+const ST = new Spreadsheet(document.querySelector('#seniortable'));
 ST.loadData({}); // 加载数据
 ST.onChange(data => {
   // 检测到数据变化时可以保存到数据库
@@ -129,12 +123,6 @@ npm run dev
       <div><sub>@param integer ci - 列索引</sub></div>
     </td>
     <td>获取单元格数据</td>
-</tr>
-<tr>
-    <td>
-      <div><b>getSelectedCell()</b></div>
-    </td>
-    <td>获取选中的单元格数据，多个单元格只取左上角的</td>
 </tr>
 <tr>
     <td>
@@ -248,9 +236,9 @@ border | {...} | 边框样式对象 `附录2`
 #### 附录2. 单元格边框样式对象
 属性 | 值 | 说明
 -|-|-
-mode | all / inside / horizontal / vertical / outside / top / bottom / left / right | 边线模式
-style | thin / medium / thick / dashed / dotted | 边线样式
-color | #FFFFFF | 边线颜色十六进制码
+mode | all / inside / horizontal / vertical / outside / top / bottom / left / right | 边框模式
+style | thin / medium / thick / dashed / dotted | 边框样式
+color | #FFFFFF | 边框颜色十六进制码
 
 ### 公有事件
 事件 | 回调参数 |  说明
