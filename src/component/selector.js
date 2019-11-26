@@ -45,6 +45,7 @@ class SelectorElement {
     const {
       left, top, width, height,
     } = v;
+
     this.autofillEl.offset({
       width: width - selectorHeightBorderWidth,
       height: height - selectorHeightBorderWidth,
