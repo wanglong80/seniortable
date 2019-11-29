@@ -119,6 +119,11 @@ class Seniortable {
     return this;
   }
 
+  // 是否为焦点
+  focusing() {
+    return this.sheet.focusing;
+  }
+
   // 撤销
   undo() {
     return this.sheet.undo();

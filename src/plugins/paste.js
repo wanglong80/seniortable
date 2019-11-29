@@ -114,6 +114,7 @@ function textHandler(sri, sci, text) {
 export default class Plugin {
   setup() {
     bind(window, 'paste', (e) => {
+      if (!this.focusing()) return;
       const { sri, sci } = this.getSelected();
 
       const clipboardData = e.clipboardData.getData('text/html');
