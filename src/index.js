@@ -29,6 +29,12 @@ class Seniortable {
     plugin.setup.call(this);
   }
 
+  // 加载数据并渲染到当前表格
+  loadData(data) {
+    this.sheet.loadData(data);
+    return this;
+  }
+
   // 获取数据
   getData() {
     return this.data.getData();
@@ -118,25 +124,9 @@ class Seniortable {
     return validations.errors.size <= 0;
   }
 
-  // 加载数据并渲染到当前表格
-  loadData(data) {
-    this.sheet.loadData(data);
-    return this;
-  }
-
   // 是否为焦点
   focusing() {
     return this.sheet.focusing;
-  }
-
-  // 撤销
-  undo() {
-    return this.sheet.undo();
-  }
-
-  // 重做
-  redo() {
-    return this.sheet.redo();
   }
 
   // 冻结指定行和列
@@ -153,6 +143,16 @@ class Seniortable {
   // 根据坐标获取单元格位置
   getRectByXY(x, y) {
     return this.data.getCellRectByXY(x, y);
+  }
+
+  // 撤销
+  undo() {
+    return this.sheet.undo();
+  }
+
+  // 重做
+  redo() {
+    return this.sheet.redo();
   }
 
   // 公有事件
