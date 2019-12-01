@@ -34,20 +34,25 @@ class Seniortable {
     return this.data.getData();
   }
 
-  // 获取单元格数据
-  getCell(ri, ci) {
-    return this.data.getCell(ri, ci);
-  }
-
   // 获取当前选择的单元格坐标数据
   getSelected() {
     return this.data.selector.range;
+  }
+
+  // 获取单元格文本
+  getText(ri, ci) {
+    return this.data.getCellTextOrDefault(ri, ci);
   }
 
   // 设置单元格文本
   setText(ri, ci, text) {
     this.data.setCellText(ri, ci, text);
     return this;
+  }
+
+  // 获取单元格样式
+  getStyle(ri, ci) {
+    return this.data.getCellStyle(ri, ci);
   }
 
   // 设置单元格样式
@@ -145,6 +150,11 @@ class Seniortable {
     return this.sheet.table.render();
   }
 
+  // 根据坐标获取单元格位置
+  getRectByXY(x, y) {
+    return this.data.getCellRectByXY(x, y);
+  }
+
   // 公有事件
 
   // 数据改变时触发
@@ -153,8 +163,15 @@ class Seniortable {
     return this;
   }
 
+  // 键盘按下时触发
   onKeyDown(cb) {
     this.sheet.customEvents.keyDown = cb;
+    return this;
+  }
+
+  // 鼠标点击时触发
+  onClick(cb) {
+    this.sheet.customEvents.click = cb;
     return this;
   }
 }

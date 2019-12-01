@@ -118,17 +118,15 @@ npm run dev
 </tr>
 <tr>
     <td>
-      <div><b>getCell(ri, ci)</b></div>
-      <div><sub>@param integer ri - 行索引</sub></div>
-      <div><sub>@param integer ci - 列索引</sub></div>
-    </td>
-    <td>获取单元格数据</td>
-</tr>
-<tr>
-    <td>
       <div><b>getSelected()</b></div>
     </td>
     <td>获取当前选择的单元格坐标数据</td>
+</tr>
+<tr>
+    <td>
+      <div><b>getRectByXY(x, y)</b></div>
+    </td>
+    <td>根据坐标获取单元格位置</td>
 </tr>
 <tr>
     <td>
@@ -164,12 +162,28 @@ npm run dev
 </tr>
 <tr>
     <td>
+      <div><b>getText(ri, ci)</b></div>
+      <div><sub>@param integer ri - 行索引</sub></div>
+      <div><sub>@param integer ci - 列索引</sub></div>
+    </td>
+    <td>获取单元格文本</td>
+</tr>
+<tr>
+    <td>
       <div><b>setText(ri, ci, text)</b></div>
       <div><sub>@param integer ri - 行索引</sub></div>
       <div><sub>@param integer ci - 列索引</sub></div>
       <div><sub>@param string text - 文本</sub></div>
     </td>
     <td>设置单元格文本</td>
+</tr>
+<tr>
+    <td>
+      <div><b>getStyle(ri, ci)</b></div>
+      <div><sub>@param integer ri - 行索引</sub></div>
+      <div><sub>@param integer ci - 列索引</sub></div>
+    </td>
+    <td>获取单元格样式</td>
 </tr>
 <tr>
     <td>
@@ -185,15 +199,21 @@ npm run dev
 </tr>
 <tr>
     <td>
-      <div><b>merge(range)</b></div>
-      <div><sub>@param Range range - 选区对象</sub></div>
+      <div><b>merge(sri, sci, eri, eci)</b></div>
+      <div><sub>@param integer sri - 起始行索引</sub></div>
+      <div><sub>@param integer sci - 起始列索引</sub></div>
+      <div><sub>@param integer eri - 结束行索引</sub></div>
+      <div><sub>@param integer eci - 结束列索引</sub></div>
     </td>
     <td>合并单元格</td>
 </tr>
 <tr>
     <td>
-      <div><b>unmerge(range)</b></div>
-      <div><sub>@param Range range - 选区对象</sub></div>
+      <div><b>unmerge(sri, sci, eri, eci)</b></div>
+      <div><sub>@param integer sri - 起始行索引</sub></div>
+      <div><sub>@param integer sci - 起始列索引</sub></div>
+      <div><sub>@param integer eri - 结束行索引</sub></div>
+      <div><sub>@param integer eci - 结束列索引</sub></div>
     </td>
     <td>拆分选中的单元格</td>
 </tr>
@@ -210,6 +230,12 @@ npm run dev
       <div><sub>@param integer ci - 列索引</sub></div>
     </td>
     <td>冻结指定行和列，设置(0,0) 可以解除冻结</td>
+</tr>
+<tr>
+    <td>
+      <div><b>focusing()</b></div>
+    </td>
+    <td>判断当前表格是否为焦点</td>
 </tr>
 </table> 
 
@@ -238,9 +264,10 @@ color | #FFFFFF | 边框颜色十六进制码
 
 ### 公有事件
 事件 | 回调参数 |  说明
--|-|-
-onChange(cb) | `$1` 全部数据 | 单元格内容改变时触发
-onKeyDown(cb) | `$1` 事件对象 | 表格存在焦点时键盘按下时触发
+-|-
+onChange(cb) | 单元格内容改变时触发
+onKeyDown(cb) | 表格存在焦点时键盘按下时触发
+onClick(cb) | 点击表格时触发
 
 ## 浏览器支持
 

@@ -22,7 +22,10 @@
     <button onclick="window.console.log(ST.getSelected())">获取当前坐标</button>
     <button onclick="
     const {sri, sci} = ST.getSelected();
-    window.console.log(ST.getCell(sri, sci))">获取选中的单元格</button>
+    window.console.log(ST.getText(sri, sci))">获取选中的单元格</button>
+    <button onclick="
+     const {sri, sci} = ST.getSelected();
+     window.console.log(ST.getStyle(sri, sci))">获取选中的单元格样式</button>
     <button onclick="
      const {sri, sci} = ST.getSelected();
      ST.setText(sri, sci, 'test').render()">设置单元格文本</button>

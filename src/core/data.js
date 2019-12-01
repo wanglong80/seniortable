@@ -355,9 +355,9 @@ export default class Data {
     if (ri < 0) nri = rows.len - 1;
     if (ci < 0) nci = cols.len - 1;
     if (nri > cri) [sri, eri] = [cri, nri];
-    else [sri, eri] = [nri, cri];
+    else[sri, eri] = [nri, cri];
     if (nci > cci) [sci, eci] = [cci, nci];
-    else [sci, eci] = [nci, cci];
+    else[sci, eci] = [nci, cci];
     selector.range = merges.union(new Range(
       sri, sci, eri, eci,
     ));
@@ -545,6 +545,7 @@ export default class Data {
     };
   }
 
+  // 根据坐标获取当前单元格位置
   getCellRectByXY(x, y) {
     const {
       scroll, merges, rows, cols,
@@ -730,39 +731,6 @@ export default class Data {
   }
 
   // type: row | column
-  delete2(type) {
-    this.changeData(() => {
-      const {
-        rows, merges, selector, cols,
-      } = this;
-      const { range } = selector;
-      const {
-        sri, sci, eri, eci,
-      } = selector.range;
-      const [rsize, csize] = selector.range.size();
-      let si = sri;
-      let size = rsize;
-      if (type === 'row') {
-        rows.delete(sri, eri);
-      } else if (type === 'column') {
-        rows.deleteColumn(sci, eci);
-        si = range.sci;
-        size = csize;
-        cols.len -= 1;
-      }
-      // console.log('type:', type, ', si:', si, ', size:', size);
-      merges.shift(type, si, -size, (ri, ci, rn, cn) => {
-        // console.log('ri:', ri, ', ci:', ci, ', rn:', rn, ', cn:', cn);
-        const cell = rows.getCell(ri, ci);
-        cell.merge[0] += rn;
-        cell.merge[1] += cn;
-        if (cell.merge[0] === 0 && cell.merge[1] === 0) {
-          delete cell.merge;
-        }
-      });
-    });
-  }
-
   delete(type, si, ei) {
     const range = new Range(si, si, ei, ei);
     this.changeData(() => {

@@ -260,6 +260,7 @@ function overlayerMousedown(evt) {
   const { offsetX, offsetY } = evt;
   const isAutofillEl = evt.target.className === `${cssPrefix}-selector-corner`;
   const cellRect = data.getCellRectByXY(offsetX, offsetY);
+
   const {
     left, top, width, height,
   } = cellRect;
@@ -489,7 +490,7 @@ function sheetInitEvents() {
     .on('mousedown', (evt) => {
       // the left mouse button: mousedown → mouseup → click
       // the right mouse button: mousedown → contenxtmenu → mouseup
-      if (evt.buttons === 2) {
+      if (evt.buttons === 2) { // 右键
         // if (data.xyInSelectedRect(evt.offsetX, evt.offsetY)) {
         //   contextMenu.setPosition(evt.offsetX, evt.offsetY);
         //   evt.stopPropagation();
@@ -501,6 +502,10 @@ function sheetInitEvents() {
       } else {
         editor.clear();
         overlayerMousedown.call(this, evt);
+      }
+
+      if (typeof this.customEvents.click === 'function') {
+        this.customEvents.click(evt);
       }
     }).on('mousewheel.stop', (evt) => {
       evt.preventDefault(); // mac下禁止左右翻页，禁止回弹效果

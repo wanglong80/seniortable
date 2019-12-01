@@ -60,8 +60,6 @@ function tableHandler(sri, sci, content) {
     ri += 1;
   }
 
-  console.log(rowColspanMap);
-
   this.render();
 }
 
