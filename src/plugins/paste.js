@@ -3,61 +3,54 @@ import { bind } from '../component/event';
 
 // 表格处理器
 function tableHandler(sri, sci, content) {
+  console.log(content)
   const trs = content.getElementsByTagName('tr');
 
-  const rowColspanMap = {};
+  let rowspanCache = {};
 
-  let ri = 0;
-  for (let i = 0; i < trs.length; i += 1) {
-    const tds = trs[i].getElementsByTagName('td');
+  for (let trIndex = 0; trIndex < trs.length; trIndex += 1) {
+    const tds = trs[trIndex].getElementsByTagName('td');
 
-    let ci = 0;
-    for (let j = 0; j < tds.length; j += 1) {
-      let value = tds[j].innerText;
-      value = value.replace(/[(^\r\n)|(^\n)|(\r\n$)|(\n$)]/g, '');
-      let rowspan = tds[j].getAttribute('rowspan');
-      let colspan = tds[j].getAttribute('colspan');
+    let sriBase = 0;
+    for (let tdIndex = 0; tdIndex < tds.length; tdIndex += 1) {
+      let td = tds[tdIndex];
+      let value = td.innerText.replace(/[(^\r\n)|(^\n)|(\r\n$)|(\n$)]/g, '');
+      let rowspan = td.getAttribute('rowspan');
+      let colspan = td.getAttribute('colspan');
 
-      rowspan = rowspan ? parseInt(rowspan, 10) : 0;
-      colspan = colspan ? parseInt(colspan, 10) : 0;
-      rowspan = colspan > 0 && rowspan === 0 ? 1 : rowspan;
-      colspan = rowspan > 0 && colspan === 0 ? 1 : colspan;
+      rowspan = rowspan ? parseInt(rowspan, 10) : 1;
+      colspan = colspan ? parseInt(colspan, 10) : 1;
 
-      if (rowspan > 0) {
+      if (rowspan > 1) {
         for (let k = 0; k < rowspan; k += 1) {
-          rowColspanMap[`${i + k},${j}`] = colspan;
+          if (k === 0) {
+            rowspanCache[`${trIndex + k},${tdIndex + 1}`] = colspan - 1;
+          } else {
+            rowspanCache[`${trIndex + k},${tdIndex}`] = colspan;
+          }
         }
       }
 
-      // 如果当前行存在列被合并的情况
-      let colspanOnCurrentRow = 0;
-      if (rowColspanMap[`${i},${j}`]) {
-        colspanOnCurrentRow = rowColspanMap[`${i},${j}`]; // 还是有bug
-      }
+      console.log('rowspanCache', rowspanCache)
 
       // 合并单元格
-      if (rowspan > 0 || colspan > 0) {
-        const eri = sri + i + rowspan - 1;
-        const eci = sci + j + colspan - 1;
-        this.merge(sri + i, sci + j, eri, eci);
-        // console.log('mergeCells', sri + i, sci + j, rowspan, mergeCN);
-        this.setText(sri + ri, sci + ci, value);
-      } else if (colspanOnCurrentRow > 0) {
-        ci += (colspanOnCurrentRow > 0 ? colspanOnCurrentRow : 0);
-        this.setText(sri + ri, sci + ci, value);
-        console.log('colspanOnCurrentRow', colspanOnCurrentRow);
-      } else {
-        ci += (colspan > 0 ? colspan - 1 : 0);
-        this.setText(sri + ri, sci + ci, value);
+      if (rowspan > 1 || colspan > 1) {
+        const eri = sri + trIndex + rowspan - 1;
+        const eci = sci + tdIndex + colspan - 1;
+        this.merge(sri + trIndex, sci + tdIndex, eri, eci);
+        this.setText(sri + trIndex, sci + tdIndex, value);
+      }
+      else {
+        if (rowspanCache[`${trIndex},${tdIndex}`]) {
+          sriBase += (rowspanCache[`${trIndex},${tdIndex}`]);
+        }
+
+        const ci = sriBase + tdIndex;
+        this.setText(sri + trIndex, sci + ci, value);
       }
 
-      console.log('row:', sri + ri, 'col:', ci, 'rowspan', rowspan, 'colspan', colspan, 'value:', value);
-
-      ci += (colspan > 0 ? colspan - 1 : 0);
-      ci += 1;
+      console.log('row:', sri + trIndex, 'col:', tdIndex, 'sriBase:', sriBase, 'rowspan:', rowspan, 'colspan', colspan, 'value:', value);
     }
-
-    ri += 1;
   }
 
   this.render();
