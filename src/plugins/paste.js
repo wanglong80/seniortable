@@ -3,53 +3,41 @@ import { bind } from '../component/event';
 
 // 表格处理器
 function tableHandler(sri, sci, content) {
-  console.log(content)
   const trs = content.getElementsByTagName('tr');
-
-  let rowspanCache = {};
+  const mergedCells = {};
 
   for (let trIndex = 0; trIndex < trs.length; trIndex += 1) {
     const tds = trs[trIndex].getElementsByTagName('td');
 
-    let sriBase = 0;
-    for (let tdIndex = 0; tdIndex < tds.length; tdIndex += 1) {
-      let td = tds[tdIndex];
-      let value = td.innerText.replace(/[(^\r\n)|(^\n)|(\r\n$)|(\n$)]/g, '');
+    let realTdIndex = 0;
+    for (let tdIndex = 0; tdIndex < tds.length; tdIndex += 1, realTdIndex += 1) {
+      const td = tds[tdIndex];
+      const value = td.innerText.replace(/[(^\r\n)|(^\n)|(\r\n$)|(\n$)]/g, '');
       let rowspan = td.getAttribute('rowspan');
       let colspan = td.getAttribute('colspan');
 
       rowspan = rowspan ? parseInt(rowspan, 10) : 1;
       colspan = colspan ? parseInt(colspan, 10) : 1;
 
-      if (rowspan > 1) {
-        for (let k = 0; k < rowspan; k += 1) {
-          if (k === 0) {
-            rowspanCache[`${trIndex + k},${tdIndex + 1}`] = colspan - 1;
-          } else {
-            rowspanCache[`${trIndex + k},${tdIndex}`] = colspan;
-          }
-        }
+      while (mergedCells[`${realTdIndex},${trIndex}`]) {
+        realTdIndex += 1;
       }
-
-      console.log('rowspanCache', rowspanCache)
 
       // 合并单元格
       if (rowspan > 1 || colspan > 1) {
         const eri = sri + trIndex + rowspan - 1;
-        const eci = sci + tdIndex + colspan - 1;
-        this.merge(sri + trIndex, sci + tdIndex, eri, eci);
-        this.setText(sri + trIndex, sci + tdIndex, value);
-      }
-      else {
-        if (rowspanCache[`${trIndex},${tdIndex}`]) {
-          sriBase += (rowspanCache[`${trIndex},${tdIndex}`]);
+        const eci = sci + realTdIndex + colspan - 1;
+        this.merge(sri + trIndex, sci + realTdIndex, eri, eci);
+        this.setText(sri + trIndex, sci + realTdIndex, value);
+
+        for (let mergeTrIndex = 0; mergeTrIndex < rowspan; mergeTrIndex += 1) {
+          for (let mergeTdIndex = 0; mergeTdIndex < colspan; mergeTdIndex += 1) {
+            mergedCells[`${realTdIndex + mergeTdIndex},${trIndex + mergeTrIndex}`] = 1;
+          }
         }
-
-        const ci = sriBase + tdIndex;
-        this.setText(sri + trIndex, sci + ci, value);
+      } else {
+        this.setText(sri + trIndex, sci + realTdIndex, value);
       }
-
-      console.log('row:', sri + trIndex, 'col:', tdIndex, 'sriBase:', sriBase, 'rowspan:', rowspan, 'colspan', colspan, 'value:', value);
     }
   }
 
