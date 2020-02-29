@@ -23,7 +23,7 @@ npm install seniortable
 ```javascript
 import Seniortable from "seniortable";
 
-const ST = new Spreadsheet(document.querySelector('#seniortable'));
+const ST = new Seniortable(document.querySelector('#seniortable'));
 ST.loadData({}); // 加载数据
 ST.onChange(data => {
   // 检测到数据变化时可以保存到数据库
@@ -268,6 +268,7 @@ color | #FFFFFF | 边框颜色十六进制码
 onChange(cb) | 单元格内容改变时触发
 onKeyDown(cb) | 表格存在焦点时键盘按下时触发
 onClick(cb) | 点击表格时触发
+onSelected(cb) | 单元格被选中时触发
 
 ## 浏览器支持
 

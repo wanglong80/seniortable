@@ -79,7 +79,7 @@ class Seniortable {
     return this;
   }
 
-  // 未选中的单元格计算公式
+  // 选中的单元格计算公式
   formulaSelectedCell(formula) {
     this.data.formulaSelectedCell(formula);
     return this;
@@ -166,6 +166,12 @@ class Seniortable {
   // 键盘按下时触发
   onKeyDown(cb) {
     this.sheet.customEvents.keyDown = cb;
+    return this;
+  }
+
+  // 单元格被选中时触发用户自定义事件
+  onSelected(cb) {
+    this.sheet.customEvents.onSelected = cb;
     return this;
   }
 

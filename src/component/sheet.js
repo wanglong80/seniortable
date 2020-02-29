@@ -41,6 +41,7 @@ function scrollbarMove() {
   }
 }
 
+// 单元格选择器选中时/单元格选择器移动时触发
 function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
   if (ri === -1 && ci === -1) return;
   // console.log(multiple, ', ri:', ri, ', ci:', ci);
@@ -52,6 +53,11 @@ function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
     selector.setEnd(ri, ci, moving);
   } else {
     selector.set(ri, ci, indexesUpdated);
+  }
+
+  // 单元格被选中时触发用户自定义事件
+  if (typeof this.customEvents.onSelected === 'function') {
+    this.customEvents.onSelected(ri, ci, multiple, moving);
   }
 
   table.render();
